@@ -51,7 +51,6 @@
             <archive>
                 <manifest>
                     <mainClass>memoryStand.MemoryStandMain</mainClass>
-                    <!--Premain-Class>memoryStand.ObjectSizeFetcher</Premain-Class-->
                 </manifest>
             </archive>
         </configuration>
