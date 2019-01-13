@@ -9,8 +9,8 @@ public abstract class ObjectsFactory
 {
     protected boolean hasObjects;
     int selectedNum;
-    abstract Object GetObject();
-    abstract void Next();
+    abstract Object getObject();
+    abstract void next();
     boolean HasObjects() {return  hasObjects;}
 }
 interface CollectionsFactory
@@ -29,7 +29,7 @@ interface CollectionsFactory
      }
 
      @Override
-     Object GetObject()
+     Object getObject()
      {
          switch (selectedNum)
          {
@@ -57,7 +57,7 @@ interface CollectionsFactory
      }
 
      @Override
-     void Next()
+     void next()
      {
          if(selectedNum>=maxNum)
              hasObjects = false;
@@ -73,7 +73,7 @@ interface CollectionsFactory
          hasObjects = true;
      }
      @Override
-     Object GetObject()
+     Object getObject()
      {
          switch (selectedNum)
          {
@@ -92,7 +92,7 @@ interface CollectionsFactory
          }
      }
      @Override
-     void Next()
+     void next()
      {
          if(selectedNum>=maxNum)
              hasObjects = false;
@@ -110,19 +110,19 @@ interface CollectionsFactory
             objects = new ArrayList<ArrayList<T>>();
         }
 
-        void Add(ArrayList<T> list)
+        void add(ArrayList<T> list)
         {
             objects.add(list);
             hasObjects = true;
         }
 
         @Override
-        Object GetObject()
+        Object getObject()
         {
            return new ArrayList<T>(objects.get(selectedNum));
         }
         @Override
-        void Next()
+        void next()
         {
             selectedNum++;
             if(selectedNum>objects.size()-1)
@@ -144,19 +144,19 @@ class HashMapFactory<K,V> extends ObjectsFactory implements CollectionsFactory
         objects = new ArrayList<HashMap<K, V>>();
     }
 
-    void Add(HashMap<K,V> map)
+    void add(HashMap<K,V> map)
     {
         objects.add(map);
         hasObjects = true;
     }
 
     @Override
-    Object GetObject()
+    Object getObject()
     {
         return new HashMap<K,V>(objects.get(selectedNum));
     }
     @Override
-    void Next()
+    void next()
     {
         selectedNum++;
         if(selectedNum>objects.size()-1)

@@ -6,7 +6,7 @@ public class MemStand
 {
     private long objectSize;
 
-    public void CalcSize(ObjectsFactory factory) throws InterruptedException
+    public void calcSize(ObjectsFactory factory) throws InterruptedException
     {
         final int size = 2000000;
         while (factory.HasObjects())
@@ -15,7 +15,7 @@ public class MemStand
 
             long mem2 = getMem();
             for (int i = 0; i < array.length; i++)
-                array[i] = factory.GetObject();
+                array[i] = factory.getObject();
 
             long mem3 = getMem();
             objectSize = (mem3 - mem2) / array.length;
@@ -24,14 +24,14 @@ public class MemStand
 
             array = null;
             Thread.sleep(1000); //wait for 1 sec
-            factory.Next();
+            factory.next();
         }
     }
 
     private void printInfo(ObjectsFactory factory)
     {
         int length=0;
-        Class<?> cl = factory.GetObject().getClass();
+        Class<?> cl = factory.getObject().getClass();
         System.out.println("Object type: " + cl.getName());
 
         if(factory instanceof CollectionsFactory)
@@ -54,7 +54,7 @@ public class MemStand
             }
         }
         System.out.println("Object size: " + objectSize);
-        //System.out.println("Instrumentation Size " + ObjectSizeFetcher.getObjectSize(factory.GetObject()));
+        //System.out.println("Instrumentation Size " + ObjectSizeFetcher.getObjectSize(factory.getObject()));
         System.out.println();
     }
 
