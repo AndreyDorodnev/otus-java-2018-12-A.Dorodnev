@@ -54,6 +54,7 @@ public class MemStand
             }
         }
         System.out.println("Object size: " + objectSize);
+        //System.out.println("Instrumentation Size " + ObjectSizeFetcher.getObjectSize(factory.GetObject()));
         System.out.println();
     }
 

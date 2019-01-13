@@ -24,7 +24,7 @@ interface CollectionsFactory
 
      public StringFactory()
      {
-        maxNum = 5;
+        maxNum = 6;
         hasObjects = true;
      }
 
@@ -45,6 +45,8 @@ interface CollectionsFactory
                  return new String(new byte[3]);
              case 5:
                  return new String(new byte[4]);
+             case 6:
+                 return new String(new byte[5]);
              default:
                  return null;
          }

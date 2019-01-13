@@ -10,8 +10,8 @@ public class MemoryStandMain
 {
     public static void main(String... args) throws InterruptedException
     {
-        MemStandStart();
-        //Test();
+        //MemStandStart();
+        Test();
     }
 
     private static void Test() throws InterruptedException
@@ -24,7 +24,7 @@ public class MemoryStandMain
         System.out.println("Mem: " + mem);
 
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for(int i=0;i<10;i++)
+        for(int i=0;i<6;i++)
             list.add(i);
         HashMap<Integer,Integer> map = new HashMap<Integer, Integer>();
         for(int i=0;i<10;i++)
@@ -36,6 +36,7 @@ public class MemoryStandMain
 
         for (int i = 0; i < array.length; i++)
         {
+            //array[i] = 1f;
             //array[0] = new Object();
             //array[i] = new String("aaa"); //String pool
             //array[i] = new String(new char[0]); // java8 or java9
