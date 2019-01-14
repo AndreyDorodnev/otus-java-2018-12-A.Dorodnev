@@ -7,15 +7,15 @@ public class MemoryStandMain
 {
     public static void main(String[] args) throws InterruptedException {
         MemStand ms = new MemStand();
-        objectsFactory factory;
+        ObjectsFactory factory;
         System.out.println("Start test");
-        System.out.println("");
+        System.out.println();
         stringTest(ms);
         arrayListTest(ms);
         hashMapTest(ms);
     }
     public static void stringTest(MemStand ms) throws InterruptedException {
-        objectsFactory factory;
+        ObjectsFactory factory;
         factory = ()-> new String("");
         ms.MemCalc(factory);
         factory = ()-> new String(new byte[1]);
@@ -28,7 +28,7 @@ public class MemoryStandMain
         ms.MemCalc(factory);
     }
     public static void arrayListTest(MemStand ms) throws InterruptedException {
-        objectsFactory factory;
+        ObjectsFactory factory;
         ArrayList<Integer> list = new ArrayList<Integer>();
         factory = ()-> new ArrayList<Integer>(list);
         ms.MemCalc(factory);
@@ -39,7 +39,7 @@ public class MemoryStandMain
         }
     }
     public static void hashMapTest(MemStand ms) throws InterruptedException {
-        objectsFactory factory;
+        ObjectsFactory factory;
         HashMap<Integer,Integer> map = new HashMap<>();
         factory = ()-> new HashMap<Integer, Integer>(map);
         ms.MemCalc(factory);

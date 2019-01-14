@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public class MemStand
 {
-    public void MemCalc(objectsFactory factory) throws InterruptedException {
+    public void MemCalc(ObjectsFactory factory) throws InterruptedException {
         final int size = 2_000_000;
         Object[] array = new Object[size];
         long mem2 = getMem();

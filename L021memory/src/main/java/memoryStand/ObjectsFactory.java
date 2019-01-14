@@ -1,5 +1,5 @@
 package memoryStand;
 
- interface objectsFactory {
+ interface ObjectsFactory {
      Object getObject();
 }
