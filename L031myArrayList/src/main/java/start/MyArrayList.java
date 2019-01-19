@@ -113,7 +113,6 @@ public class MyArrayList<T> implements List<T> {
 
     public boolean addAll(Collection<? extends T> collection) {
         Object[] data = collection.toArray();
-        //int dataSize = collection.size(); //optimize????
         if(data.length==0)
             return false;
         if(data.length >(elements.length-size))
