@@ -15,7 +15,7 @@ import java.util.*;
 public class Main {
     private static List<Runnable> registration = new ArrayList<>();
     private static Timer timer = new Timer();
-    private static GC_CollectInfo gc_inf = new GC_CollectInfo();
+    private static GC_CollectInfo gcInf = new GC_CollectInfo();
     private static final long TIMER_PERIOD = 5*1000;
 
     public static void main(String[] args) {
@@ -26,10 +26,10 @@ public class Main {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println(gc_inf.getOldGenInfo());
-                System.out.println(gc_inf.getYoungGenInfo());
-                gc_inf.calcTotal();
-                gc_inf.clear();
+                System.out.println(gcInf.getOldGenInfo());
+                System.out.println(gcInf.getYoungGenInfo());
+                gcInf.calcTotal();
+                gcInf.clear();
             }
         },TIMER_PERIOD,TIMER_PERIOD);
 
@@ -45,7 +45,7 @@ public class Main {
             }
         }
         catch (OutOfMemoryError err){
-            System.out.println(gc_inf.getTotalInfo());
+            System.out.println(gcInf.getTotalInfo());
             System.exit(0);
         }
 
@@ -69,16 +69,16 @@ public class Main {
                             case "PS Scavenge":
                             case "ParNew":
                             case "G1 Young Generation":
-                                gc_inf.increaseYoungGenCount();
-                                gc_inf.addYoungGenTime(duration);
+                                gcInf.increaseYoungGenCount();
+                                gcInf.addYoungGenTime(duration);
                                 break;
                             case "PS MarkSweep":
                             case "MarkSweepCompact":
                             case "ConcurrentMarkSweep":
                             case "G1 Mixed Generation":
                             case "G1 Old Generation":
-                                gc_inf.increaseOldGenCount();
-                                gc_inf.addOldGenTime(duration);
+                                gcInf.increaseOldGenCount();
+                                gcInf.addOldGenTime(duration);
                                 break;
                         }
 
