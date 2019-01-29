@@ -1,7 +1,10 @@
 package start;
 
+//-XX:+UseParallelGC
+//-XX:+UseSerialGC
+//-XX:+UseConcMarkSweepGC
+
 import com.sun.management.GarbageCollectionNotificationInfo;
-import javax.management.MBeanServer;
 import javax.management.ListenerNotFoundException;
 import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
@@ -13,7 +16,7 @@ public class Main {
     private static List<Runnable> registration = new ArrayList<>();
     private static Timer timer = new Timer();
     private static GC_CollectInfo gc_inf = new GC_CollectInfo();
-    private static final long TIMER_PERIOD = 60*1000;
+    private static final long TIMER_PERIOD = 5*1000;
 
     public static void main(String[] args) {
         ArrayList<Object> list = new ArrayList<>();
@@ -61,13 +64,22 @@ public class Main {
                         long duration = info.getGcInfo().getDuration();
                         String gctype = info.getGcAction();
 
-                        if(info.getGcName().contains("Old")){
-                            gc_inf.increaseOldGenCount();
-                            gc_inf.addOldGenTime(duration);
-                        }
-                        else {
-                            gc_inf.increaseYoungGenCount();
-                            gc_inf.addYoungGenTime(duration);
+                        switch (info.getGcName()){
+                            case "Copy":
+                            case "PS Scavenge":
+                            case "ParNew":
+                            case "G1 Young Generation":
+                                gc_inf.increaseYoungGenCount();
+                                gc_inf.addYoungGenTime(duration);
+                                break;
+                            case "PS MarkSweep":
+                            case "MarkSweepCompact":
+                            case "ConcurrentMarkSweep":
+                            case "G1 Mixed Generation":
+                            case "G1 Old Generation":
+                                gc_inf.increaseOldGenCount();
+                                gc_inf.addOldGenTime(duration);
+                                break;
                         }
 
                     }

@@ -1,44 +1,48 @@
 package start;
 
 public class GC_CollectInfo {
-     private Integer young_count;
-     private Integer old_count;
-     private Long young_time;
-     private Long old_time;
-     private Long total_time;
-     private Integer total_count;
+     private Integer youngCount;
+     private Integer oldCount;
+     private Long youngTime;
+     private Long oldTime;
+     private Long totalTime;
+     private Integer totalCount;
 
      public GC_CollectInfo(){
-         old_time=0l;
-         old_count=0;
-         young_time=0l;
-         young_count=0;
-         total_time=0l;
-         total_count = 0;
+         oldTime =0l;
+         oldCount =0;
+         youngTime =0l;
+         youngCount =0;
+         totalTime =0l;
+         totalCount = 0;
      }
 
-     public void increaseOldGenCount(){old_count++;}
-     public void increaseYoungGenCount(){young_count++;}
-     public void addOldGenTime(long time){old_time+=time;}
-     public void addYoungGenTime(long time){young_time+=time;}
+     public void increaseOldGenCount(){
+         oldCount++;}
+     public void increaseYoungGenCount(){
+         youngCount++;}
+     public void addOldGenTime(long time){
+         oldTime +=time;}
+     public void addYoungGenTime(long time){
+         youngTime +=time;}
      public void calcTotal(){
-         total_count += old_count + young_count;
-         total_time += old_time + young_time;
+         totalCount += oldCount + youngCount;
+         totalTime += oldTime + youngTime;
      }
      public void clear(){
-         old_time=0l;
-         old_count=0;
-         young_time=0l;
-         young_count=0;
+         oldTime =0l;
+         oldCount =0;
+         youngTime =0l;
+         youngCount =0;
      }
      public String getOldGenInfo(){
-         return "Old Generation\n" + "Count: " + old_count.toString() +"\n" + "Time: " + old_time.toString() + "ms\n";
+         return "Old Generation\n" + "Count: " + oldCount.toString() +"\n" + "Time: " + oldTime.toString() + "ms\n";
      }
     public String getYoungGenInfo(){
-        return "Young Generation\n" + "Count: " + young_count.toString() +"\n" + "Time: " + young_time.toString() + "ms\n";
+        return "Young Generation\n" + "Count: " + youngCount.toString() +"\n" + "Time: " + youngTime.toString() + "ms\n";
     }
     public String getTotalInfo(){
-         return "Total collect count: " + total_count.toString() + "\n" + "Total collect time: " + total_time.toString() + "ms\n";
+         return "Total collect count: " + totalCount.toString() + "\n" + "Total collect time: " + totalTime.toString() + "ms\n";
     }
 
 }
