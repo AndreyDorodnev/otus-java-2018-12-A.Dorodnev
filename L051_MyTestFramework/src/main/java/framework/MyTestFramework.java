@@ -14,9 +14,7 @@ public final class MyTestFramework {
     private static final String BEFORE_ALL = BeforeAll.class.getName();
     private static final String AFTER_EACH = AfterEach.class.getName();
     private static final String AFTER_ALL = AfterAll.class.getName();
-
-    private static HashMap<String, ArrayList<Method>> methodHashMap = new HashMap<>();
-
+    
     private MyTestFramework(){
 
     }
@@ -39,19 +37,20 @@ public final class MyTestFramework {
         }).toArray(Method[]::new);
 
         Method[] methods = testClass.getDeclaredMethods();
-        createAnnotationMethodsMap(methods);
-        
-        invokeStaticMethodWithAnnotation(testClass, BEFORE_ALL);
+        HashMap<String, ArrayList<Method>> methodHashMap = createAnnotationMethodsMap(methods);
+
+        invokeStaticMethodWithAnnotation(testClass, methodHashMap.get(BEFORE_ALL));
         for (Method method:testMethods){
             Object instance =  ReflectionHelper.instantiate(testClass);
-            invokeMethodWithAnnotation(instance, BEFORE_EACH);
+            invokeMethodWithAnnotation(instance,methodHashMap.get(BEFORE_EACH));
             ReflectionHelper.callMethod(instance,method.getName(),method.getParameterTypes());
-            invokeMethodWithAnnotation(instance, AFTER_EACH);
+            invokeMethodWithAnnotation(instance,methodHashMap.get(AFTER_EACH));
         }
-        invokeStaticMethodWithAnnotation(testClass, AFTER_ALL);
+        invokeStaticMethodWithAnnotation(testClass,methodHashMap.get(AFTER_ALL));
     }
 
-    private static void createAnnotationMethodsMap(Method[] methods){
+    private static HashMap<String, ArrayList<Method>> createAnnotationMethodsMap(Method[] methods){
+        HashMap<String, ArrayList<Method>> methodHashMap = new HashMap<>();
         methodHashMap.put(BEFORE_EACH,new ArrayList<>());
         methodHashMap.put(BEFORE_ALL,new ArrayList<>());
         methodHashMap.put(AFTER_ALL,new ArrayList<>());
@@ -67,17 +66,16 @@ public final class MyTestFramework {
                 methodHashMap.get(AFTER_ALL).add(method);
             }
         }
+        return methodHashMap;
     }
-    private static void invokeStaticMethodWithAnnotation(Class<?> instance, String annotationName){
-        ArrayList<Method> methodsList =  methodHashMap.get(annotationName);
+    private static void invokeStaticMethodWithAnnotation(Class<?> instance,ArrayList<Method> methodsList){
         if(methodsList!=null){
             for (Method method: methodsList){
                 ReflectionHelper.callStaticMethod(instance,method.getName(),method.getParameterTypes());
             }
         }
     }
-    private static void invokeMethodWithAnnotation(Object instance, String annotationName){
-        ArrayList<Method> methodsList =  methodHashMap.get(annotationName);
+    private static void invokeMethodWithAnnotation(Object instance,ArrayList<Method> methodsList){
         if(methodsList!=null){
             for (Method method: methodsList){
                 ReflectionHelper.callMethod(instance,method.getName(),method.getParameterTypes());
