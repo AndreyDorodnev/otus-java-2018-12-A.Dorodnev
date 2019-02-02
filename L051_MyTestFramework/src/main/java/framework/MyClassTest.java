@@ -9,11 +9,11 @@ public class MyClassTest {
     }
 
     @BeforeAll
-    public void beforeAll(){
+    public static void beforeAll(){
         System.out.println("beforeAll");
     }
     @AfterAll
-    public void afterAll(){
+    public static void afterAll(){
         System.out.println("afterAll");
     }
     @BeforeEach

@@ -66,6 +66,24 @@ public final class ReflectionHelper {
         }
     }
 
+    static Object callStaticMethod(Class<?> clazz,String name,Object...args){
+        Method method = null;
+        boolean isAccessible = true;
+        try {
+            method = clazz.getDeclaredMethod(name, toClasses(args));
+            isAccessible = method.canAccess(null);
+            method.setAccessible(true);
+            return method.invoke(null, args);
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        } finally {
+            if (method != null && !isAccessible) {
+                method.setAccessible(false);
+            }
+        }
+        return null;
+    }
+
     static Object callMethod(Object object, String name, Object... args) {
         Method method = null;
         boolean isAccessible = true;
