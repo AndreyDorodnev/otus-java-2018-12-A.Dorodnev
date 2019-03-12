@@ -1,172 +1,153 @@
 package emulator;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Atm {
     private Card card;
-    private boolean hasCard;
-    private AtmMessage message;
-    private Map<Banknote,Integer> banknotes = new TreeMap<Banknote, Integer>(Collections.reverseOrder());
+    private Map<Banknote,MoneyCell> cellMap = new HashMap<>();
 
     public Atm(){
         card = null;
-        hasCard = false;
         initBanknotes();
     }
 
-    public enum  AtmMessage {
-        No_card,
-        Not_enough_card,
-        Not_enough_atm,
-        Success_operation,
-        Error_get_money,
-        Wrong_input,
-        Wrong_pin
-    }
-
     private void initBanknotes(){
-        for(Banknote.Values value: Banknote.Values.values()) {
-            banknotes.put(Banknote.getBanknote(value), 0);
+        for(Banknote.Values value: Banknote.Values.values()){
+            Banknote banknote = Banknote.getBanknote(value);
+            cellMap.put(banknote,new MoneyCell(banknote));
         }
     }
 
-    public AtmMessage getMessage(){
-        return message;
+    public void putBanknote(Banknote banknote,int val){
+        if(banknote==null)
+            throw new NullPointerException("No banknote");
+        if(val<=0)
+            throw new IllegalArgumentException("Wrong input data");
+        cellMap.get(banknote).add(val);
     }
 
-    public boolean putBanknote(Banknote banknote,int val){
-        if((banknote!=null)&&(val>0)){
-            int amount = banknotes.get(banknote);
-            banknotes.put(banknote,amount+val);
-            return true;
-        }
-        return false;
+    void checkCard(){
+        if(card==null)
+            throw new NullPointerException("No card");
     }
 
-    public void putBanknotes(Map<Banknote,Integer> inputBanknotes){
-        if(inputBanknotes!=null){
-            for(Banknote banknote:inputBanknotes.keySet()){
-                int amount = inputBanknotes.get(banknote);
-                banknotes.put(banknote,banknotes.get(banknote) + amount);
-            }
-        }
-    }
-
-    public int getAtmTotalBalance(){
+    public int getAtmBalance(Banknote.Currency currency){
         int result = 0;
-        for (Banknote banknote:banknotes.keySet()){
-            result += banknote.getValue()*banknotes.get(banknote);
+        for(MoneyCell moneyCell: cellMap.values()){
+            if(moneyCell.getCurrency().equals(currency))
+                result += moneyCell.getBalance();
         }
         return result;
     }
 
     public void getAtmBanknotesInfo(){
-        for(Banknote banknote:banknotes.keySet())
-            System.out.println("Banknote val:" + banknote.getValue() + " " + banknote.getCurrency() + " amount:" + banknotes.get(banknote));
+        for(MoneyCell moneyCell: cellMap.values()){
+            System.out.println("Banknote val:" + moneyCell.getBanknoteValue() + " " + moneyCell.getCurrency() + " amount:" + moneyCell.getAmount());
+        }
     }
 
     public boolean inputCard(Card userCard, String pinNumber){
-        if(userCard!=null){
-            if(userCard.checkPinCode(pinNumber)){
-                card = userCard;
-                hasCard = true;
-                message = AtmMessage.Success_operation;
-                return true;
-            }
-            message = AtmMessage.Wrong_pin;
+        if(userCard==null)
+            throw new NullPointerException("no card");
+        if(userCard.checkPinCode(pinNumber)){
+            card = userCard;
+            return true;
         }
-        else
-            message = AtmMessage.Wrong_input;
-        return false;
-
+        else {
+            return false;
+        }
     }
 
     public void takeCard(){
         card = null;
-        hasCard = false;
     }
 
     public String getCardBalance(){
-        if(hasCard)
-            return String.valueOf(card.getBalance());
-        message = AtmMessage.No_card;
-        return "No card available";
+        checkCard();
+        return String.valueOf(card.getBalance());
     }
 
-    public boolean putMoneyOnCard(Banknote banknote,int amount){
-        if((banknote!=null)&&(amount>0)){
-            if(hasCard){
-                    int num = banknotes.get(banknote);
-                    banknotes.put(banknote,num + amount);
-                    card.addMoney(banknote.getValue()*amount);
-                    message = AtmMessage.Success_operation;
-                    return true;
-            }
-            message = AtmMessage.No_card;
-        }
-        else
-            message = AtmMessage.Wrong_input;
-        return false;
+    public String getCardCurrency(){
+        checkCard();
+        return String.valueOf(card.getCurrency());
     }
 
-    public boolean getMoneyFromCard(int summ){
+    public void putMoneyOnCard(Banknote banknote,int amount){
+        checkCard();
+        if(banknote==null)
+            throw new NullPointerException("Wrong banknote");
+        if((amount<0)||(!banknote.getCurrency().equals(card.getCurrency())))
+            throw new IllegalArgumentException("Wrong input data");
+        cellMap.get(banknote).add(amount);
+        card.addMoney(banknote.getValue()*amount);
+    }
+
+    public boolean getMoneyFromCard(int summ,Banknote.Currency currency) throws NotEnoughMoneyException {
+        checkCard();
         if(summ>0){
-            if(hasCard){
-                if((card.getBalance()>=summ)){
-                    if(getAtmTotalBalance()>=summ){
-                        return getSumm(calcRequiredBanknotes(summ),summ);
+            if(card.getCurrency().equals(currency)){
+                if((card.getBalance()>summ)){
+                    if(getAtmBalance(currency)>summ){
+                        return getSumm(calcRequiredBanknotes(summ,currency),summ);
                     }
-                    else
-                        message =  AtmMessage.Not_enough_atm;
+                    throw new NotEnoughMoneyException("Not enough money in ATM");
                 }
-                else
-                    message =   AtmMessage.Not_enough_card;
+                throw new NotEnoughMoneyException("Not enough money on card");
             }
-            else
-                message =   AtmMessage.No_card;
+            throw new IllegalArgumentException("Wrong card currency");
         }
-        else
-            message =   AtmMessage.Wrong_input;
-        return false;
+        throw new IllegalArgumentException("Wrong input data");
     }
 
-    private Map<Banknote,Integer> calcRequiredBanknotes(int summ){
-        Map<Banknote,Integer> requiredBanknotes = new TreeMap<Banknote, Integer>();
+    private Map<Banknote,Integer> calcRequiredBanknotes(int summ, final Banknote.Currency currency){
+        Map<Banknote,Integer> requiredBanknotes = new HashMap<>();
         int val = 0;
-        for(Banknote banknote:banknotes.keySet()){
-            for(int i = banknotes.get(banknote);i>0;i--){
-                if(summ - banknote.getValue()>0){
-                    summ -= banknote.getValue();
-                    val++;
-                    requiredBanknotes.put(banknote,val);
-                    continue;
+        int calcSumm = summ;
+        MoneyCell[] cells = cellMap.values().stream()
+                .filter(a->a.getCurrency().equals(currency))
+                .sorted((o1, o2) -> {
+                    if(o1.getBanknoteValue()>o2.getBanknoteValue())
+                        return -1;
+                    else if(o1.getBanknoteValue()==o2.getBanknoteValue())
+                        return 0;
+                    return 1;
+                }).toArray(MoneyCell[]::new);
+        for(int start= 0;start<cells.length;start++){
+            for (int i = start; i < cells.length; i++){
+                for(int amount = cells[i].getAmount();amount>0;amount--){
+                    if(calcSumm - cells[i].getBanknoteValue()>0){
+                        calcSumm -= cells[i].getBanknoteValue();
+                        val++;
+                        requiredBanknotes.put(cells[i].getBanknote(),val);
+                    }
+                    else if(calcSumm - cells[i].getBanknoteValue()<0){
+                        val=0;
+                        break;
+                    }
+                    else {
+                        val++;
+                        requiredBanknotes.put(cells[i].getBanknote(),val);
+                        return requiredBanknotes;
+                    }
                 }
-                else if(summ - banknote.getValue()<0){
-                    val=0;
-                    break;
-                }
-                else {
-                    val++;
-                    requiredBanknotes.put(banknote,val);
-                    return requiredBanknotes;
-                }
+                val=0;
             }
+            val=0;
+            requiredBanknotes.clear();
+            calcSumm = summ;
         }
         return null;
     }
 
     private boolean getSumm(Map<Banknote,Integer> requiredBanknotes,int summ){
         if(requiredBanknotes==null){
-            message = AtmMessage.Error_get_money;
-            return false;
+            throw new NullPointerException("Error get money");
         }
-        for(Banknote banknote: requiredBanknotes.keySet()){
-            banknotes.put(banknote,banknotes.get(banknote) - requiredBanknotes.get(banknote));
+        for(Banknote val:requiredBanknotes.keySet()){
+            cellMap.get(val).take(requiredBanknotes.get(val));
         }
         card.takeMoney(summ);
-        message =  AtmMessage.Success_operation;
         return true;
     }
 

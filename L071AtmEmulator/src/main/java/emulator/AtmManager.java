@@ -10,30 +10,44 @@ public class AtmManager {
 
     public void setAtmStartState(){
         System.out.println("put money in atm");
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_100),5);
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_200),5);
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_500),5);
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_1000),5);
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_2000),5);
-        atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_5000),5);
+        try {
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_100),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_200),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_500),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_1000),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_2000),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Rub_5000),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Usd_50),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Usd_100),5);
+            atm.putBanknote(Banknote.getBanknote(Banknote.Values.Usd_1000),5);
+        }
+        catch (NullPointerException ex){
+            System.out.println(ex);
+        }
     }
 
-    public void printAtmBalance(){
-        System.out.println("Atm balance: " + atm.getAtmTotalBalance());
+    public void printAtmBalance(Banknote.Currency currency){
+        System.out.println("Atm balance " + currency + ": " + atm.getAtmBalance(currency));
     }
 
     public void printCardBalance(){
-        System.out.println("Card balance: " + atm.getCardBalance());
+        try {
+            System.out.println("Card balance: " + atm.getCardBalance() + " " + atm.getCardCurrency());
+        }
+        catch (NullPointerException ex){
+            System.out.println(ex);
+        }
     }
 
     public void inputCardInAtm(Card card,String pin){
-        if(card!=null){
+        try {
             if(atm.inputCard(card,pin))
                 System.out.println("Card input success");
             else System.out.println("Wrong pin number!");
         }
-        else
-            System.out.println("Error!");
+        catch (NullPointerException ex){
+            System.out.println(ex);
+        }
     }
 
     public void getAtmBanknotesInfo(){
@@ -42,19 +56,25 @@ public class AtmManager {
     }
 
     public void putMoneyOnCard(Banknote banknote,int amount){
-        System.out.println("Put on card banknote value: " + banknote.getValue() + " " + banknote.getCurrency() + ". Amount: " + amount);
-        if(atm.putMoneyOnCard(banknote,amount))
+        try {
+            System.out.println("Try to put on card banknote value: " + banknote.getValue() + " " + banknote.getCurrency() + ". Amount: " + amount);
+            atm.putMoneyOnCard(banknote,amount);
             System.out.println("Success");
-        else
-            printMessage();
+        }
+        catch (Exception ex){
+            System.out.println(ex);
+        }
     }
 
-    public void getMoneyFromCard(int summ){
-        System.out.println("Try to isuue " + summ + " from card");
-        if(atm.getMoneyFromCard(summ))
+    public void getMoneyFromCard(int summ,Banknote.Currency currency){
+        try {
+            System.out.println("Try to isuue " + summ + " " + currency + " from card");
+            atm.getMoneyFromCard(summ,currency);
             System.out.println("Success");
-        else
-            printMessage();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void takeCardFromAtm(){
@@ -62,29 +82,5 @@ public class AtmManager {
         atm.takeCard();
     }
 
-    private void printMessage(){
-        switch (atm.getMessage()){
-            case No_card:
-                System.out.println("Please, input a card in ATM");
-                break;
-            case Wrong_input:
-                System.out.println("Wrong input data!");
-                break;
-            case Success_operation:
-                System.out.println("Success");
-                break;
-            case Not_enough_atm:
-                System.out.println("Sorry, ATM have no enough money for this operation");
-                break;
-            case Error_get_money:
-                System.out.println("Error to issue money");
-                break;
-            case Not_enough_card:
-                System.out.println("You have no enough money for this operation on your card");
-                break;
-                default:
-                    System.out.println("Unknown error!");
-        }
-    }
-
 }
+

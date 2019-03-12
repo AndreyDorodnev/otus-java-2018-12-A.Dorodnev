@@ -3,34 +3,46 @@ package emulator;
 public class Main {
 
     public static void main(String[] args) {
-        UseManager();
+        useAtm();
     }
 
-    private static void UseManager(){
-        Card card = new Card("1234",31500);
+    private static void useAtm(){
+        Card ruCard = new Card("User","1234", Banknote.Currency.RUB);
+        Card usCard = new Card("User","1234", Banknote.Currency.USD);
+        ruCard.addMoney(31500);
+        usCard.addMoney(15150);
         Atm atm = new Atm();
         AtmManager atmManager = new AtmManager(atm);
-        atmManager.printAtmBalance();
+        atmManager.printAtmBalance(Banknote.Currency.RUB);
         atmManager.setAtmStartState();
-        atmManager.printAtmBalance();
-        atmManager.inputCardInAtm(card,"123");
-        atmManager.inputCardInAtm(card,"1234");
-        atmManager.printCardBalance();
-        atmManager.putMoneyOnCard(Banknote.getBanknote(Banknote.Values.Rub_100),5);
-        atmManager.printCardBalance();
-        atmManager.getMoneyFromCard(22500);
-        atmManager.printAtmBalance();
-        atmManager.printCardBalance();
         atmManager.getAtmBanknotesInfo();
-        atmManager.getMoneyFromCard(1350);
-        atmManager.printAtmBalance();
+        atmManager.printAtmBalance(Banknote.Currency.RUB);
+        atmManager.printAtmBalance(Banknote.Currency.USD);
+
+        atmManager.inputCardInAtm(ruCard,"1234");
         atmManager.printCardBalance();
-        atmManager.getAtmBanknotesInfo();
-        atmManager.getMoneyFromCard(1300);
-        atmManager.printAtmBalance();
+        atmManager.putMoneyOnCard(Banknote.getBanknote(Banknote.Values.Rub_100),2);
+        atmManager.putMoneyOnCard(Banknote.getBanknote(Banknote.Values.Usd_100),2);
         atmManager.printCardBalance();
+        atmManager.printAtmBalance(Banknote.Currency.RUB);
         atmManager.getAtmBanknotesInfo();
+        atmManager.getMoneyFromCard(27500, Banknote.Currency.RUB);
+        atmManager.getAtmBanknotesInfo();
+        atmManager.printAtmBalance(Banknote.Currency.RUB);
+        atmManager.takeCardFromAtm();
+
+        atmManager.inputCardInAtm(usCard,"1234");
+        atmManager.printCardBalance();
+        atmManager.putMoneyOnCard(Banknote.getBanknote(Banknote.Values.Rub_100),2);
+        atmManager.putMoneyOnCard(Banknote.getBanknote(Banknote.Values.Usd_100),2);
+        atmManager.printCardBalance();
+        atmManager.printAtmBalance(Banknote.Currency.USD);
+        atmManager.getAtmBanknotesInfo();
+        atmManager.getMoneyFromCard(1550, Banknote.Currency.USD);
+        atmManager.printCardBalance();
+        atmManager.printAtmBalance(Banknote.Currency.USD);
 
     }
+
 
 }

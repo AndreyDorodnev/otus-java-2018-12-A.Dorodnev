@@ -1,20 +1,21 @@
 package emulator;
 
-public final class Banknote implements Comparable {
+public final class Banknote {
 
     private final int value;
-    private final String currency = "RUB";
+    private final Currency currency;
 
     public int getValue(){
         return value;
     }
 
-    public String getCurrency(){
+    public Currency getCurrency(){
         return currency;
     }
 
-    private Banknote(int value){
-       this.value = value;
+    private Banknote(Currency currency, int value){
+        this.currency = currency;
+        this.value = value;
     }
 
     public enum Values {
@@ -23,23 +24,36 @@ public final class Banknote implements Comparable {
         Rub_500,
         Rub_1000,
         Rub_2000,
-        Rub_5000
+        Rub_5000,
+        Usd_50,
+        Usd_100,
+        Usd_1000
+    }
+    public enum Currency {
+        RUB,
+        USD
     }
 
     public static Banknote getBanknote(Values value){
         switch (value){
             case Rub_100:
-                return new Banknote(100);
+                return new Banknote(Currency.RUB,100);
             case Rub_200:
-                return new Banknote(200);
+                return new Banknote(Currency.RUB,200);
             case Rub_500:
-                return new Banknote(500);
+                return new Banknote(Currency.RUB,500);
             case Rub_1000:
-                return new Banknote(1000);
+                return new Banknote(Currency.RUB,1000);
             case Rub_2000:
-                return new Banknote(2000);
+                return new Banknote(Currency.RUB,2000);
             case Rub_5000:
-                return new Banknote(5000);
+                return new Banknote(Currency.RUB,5000);
+            case Usd_50:
+                return new Banknote(Currency.USD,50);
+            case Usd_100:
+                return new Banknote(Currency.USD,100);
+            case Usd_1000:
+                return new Banknote(Currency.USD,1000);
             default:
                 return null;
         }
@@ -57,17 +71,7 @@ public final class Banknote implements Comparable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + value;
-        return result;
+        return (getCurrency().toString()+getValue()).hashCode();
     }
 
-    public int compareTo(Object o) {
-        if(this.getValue()>((Banknote)o).getValue())
-            return 1;
-        else if(this.getValue()==((Banknote)o).getValue())
-            return 0;
-        return -1;
-    }
 }

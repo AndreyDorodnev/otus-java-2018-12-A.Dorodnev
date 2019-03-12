@@ -5,23 +5,30 @@ public class Card {
     private String serialNumber;
     private String pinCode;
     private String userName;
+    private Banknote.Currency currency;
 
     public Card(String pinCode){
         balance = 0;
         userName = "User";
         this.pinCode = pinCode;
         serialNumber =  SerialNumberGenerator.getSerialNumber();
+        currency = Banknote.Currency.RUB;
     }
 
-    public Card(String pinCode,int balance){
-        this.balance = balance;
-        userName = "User";
+    public Card(String userName,String pinCode,Banknote.Currency currency){
+        balance = 0;
+        this.userName = userName;
         this.pinCode = pinCode;
-        serialNumber =  SerialNumberGenerator.getSerialNumber();
+        this.currency = currency;
+        serialNumber = SerialNumberGenerator.getSerialNumber();
     }
 
     public int getBalance(){
         return balance;
+    }
+
+    public Banknote.Currency getCurrency(){
+        return currency;
     }
 
     public void addMoney(int amount){
@@ -56,3 +63,4 @@ public class Card {
 
 
 }
+
