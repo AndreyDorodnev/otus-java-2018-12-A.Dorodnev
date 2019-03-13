@@ -1,4 +1,4 @@
-package emulator;
+package department;
 
 import atm.Atm;
 import atm.AtmManager;
