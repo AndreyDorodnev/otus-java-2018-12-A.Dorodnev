@@ -1,5 +1,7 @@
 import base.DBService;
 import base.DBServiceImpl;
+import dao.DataSetDao;
+import dao.DataSetExecutorDao;
 import dbcommon.ConnectionHelper;
 import executors.Executor;
 import model.DataSet;
@@ -20,8 +22,13 @@ public class Main {
             final DBService dbService = new DBServiceImpl(connection,classes);
             dbService.getMetaData();
 
+            DataSetExecutorDao dao = new DataSetExecutorDao(connection);
+            dao.save(new UserDataSet("User2",12));
+            dao.save(new UserDataSet("User3",64));
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
