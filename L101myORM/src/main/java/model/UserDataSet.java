@@ -2,12 +2,15 @@ package model;
 
 import annotations.Coloumn;
 import annotations.Entity;
+import annotations.NotNullField;
 
 @Entity
 public class UserDataSet extends DataSet {
-    @Coloumn(colName = "name")
+    @Coloumn(colName = "name",colType = "VARCHAR(255)")
+    @NotNullField
     String name;
-    @Coloumn(colName = "age")
+    @Coloumn(colName = "age",colType = "SMALLINT")
+    @NotNullField
     int age;
 
     public UserDataSet(String name, int age) {
