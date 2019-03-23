@@ -1,7 +1,13 @@
 package model;
 
+import annotations.Coloumn;
+import annotations.Entity;
+
+@Entity
 public class UserDataSet extends DataSet {
+    @Coloumn(colName = "name")
     String name;
+    @Coloumn(colName = "age")
     int age;
 
     public UserDataSet(String name, int age) {

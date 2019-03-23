@@ -1,5 +1,7 @@
 package base;
 
+import model.DataSet;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -11,7 +13,12 @@ public class DBServiceImpl implements DBService {
         this.connection = connection;
     }
 
-    
+    public DBServiceImpl(Connection connection, Class<? extends DataSet>...classes){
+        this.connection = connection;
+        for (Class aClass : classes) {
+//            aClass.get
+        }
+    }
 
     @Override
     public String getMetaData() throws SQLException {
