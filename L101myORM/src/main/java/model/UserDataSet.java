@@ -13,6 +13,10 @@ public class UserDataSet extends DataSet {
     @NotNullField
     int age;
 
+    public UserDataSet(){
+
+    }
+
     public UserDataSet(String name, int age) {
         this.name = name;
         this.age = age;

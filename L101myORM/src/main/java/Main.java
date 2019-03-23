@@ -7,6 +7,7 @@ import executors.Executor;
 import model.DataSet;
 import model.UserDataSet;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -23,12 +24,23 @@ public class Main {
             dbService.getMetaData();
 
             DataSetExecutorDao dao = new DataSetExecutorDao(connection);
-            dao.save(new UserDataSet("User2",12));
-            dao.save(new UserDataSet("User3",64));
+
+            UserDataSet userDataSet1 = dao.load(1,UserDataSet.class);
+            System.out.println(userDataSet1.getName() + " " + userDataSet1.getAge());
+            dao.update(new UserDataSet(1,"updatedUser",55));
+            UserDataSet userDataSet2 = dao.load(1,UserDataSet.class);
+            dao.delete(3,UserDataSet.class);
+//            System.out.println(userDataSet2.getName() + " " + userDataSet2.getAge());
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
     }
