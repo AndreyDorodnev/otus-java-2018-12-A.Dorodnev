@@ -3,9 +3,11 @@ import base.DBServiceImpl;
 import dao.DataSetDao;
 import dao.DataSetExecutorDao;
 import dbcommon.ConnectionHelper;
+import exceptions.NoEntityException;
 import executors.Executor;
 import model.DataSet;
 import model.UserDataSet;
+import model.UserDataSetExtended;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -16,31 +18,43 @@ public class Main {
 
         try (final Connection connection = ConnectionHelper.getPostgresqlConnection()){
 
-            Class<? extends DataSet>[] classes = new Class[2];
+            Class<? extends DataSet>[] classes = new Class[3];
             classes[0] = DataSet.class;
             classes[1] = UserDataSet.class;
+            classes[2] = UserDataSetExtended.class;
 
             final DBService dbService = new DBServiceImpl(connection,classes);
             dbService.getMetaData();
 
             DataSetExecutorDao dao = new DataSetExecutorDao(connection);
 
-            UserDataSet userDataSet1 = dao.load(1,UserDataSet.class);
-            System.out.println(userDataSet1.getName() + " " + userDataSet1.getAge());
-            dao.update(new UserDataSet(1,"updatedUser",55));
-            UserDataSet userDataSet2 = dao.load(1,UserDataSet.class);
-            dao.delete(3,UserDataSet.class);
-//            System.out.println(userDataSet2.getName() + " " + userDataSet2.getAge());
+            //UserDataSet
+            dao.save(new UserDataSet("User1",10));
+            dao.save(new UserDataSet("User2",55));
+            dao.save(new UserDataSet("User3",27));
+            UserDataSet user = dao.load(2,UserDataSet.class);
+            System.out.println("User id: " + user.getId() + " name: " + user.getName() + " age: " + user.getAge());
+            dao.update(2,new UserDataSet("updatedUser",88));
+            user = dao.load(2,UserDataSet.class);
+            System.out.println("User id: " + user.getId() + " name: " + user.getName() + " age: " + user.getAge());
+            dao.delete(2,UserDataSet.class);
+            user = dao.load(2,UserDataSet.class);
+
+            //UserDataSetExtended
+            dao.save(new UserDataSetExtended("User1","123-456",20,60.4F));
+            dao.save(new UserDataSetExtended("User2","987-654",30,80.6F));
+            UserDataSetExtended userExt = dao.load(1,UserDataSetExtended.class);
+            System.out.println("User id: " + userExt.getId() + " name: " + userExt.getName()
+                    + " phone: " + userExt.getPhoneNumber() + " age: "
+                    + userExt.getAge() + " weight " + userExt.getWeight());
+
+            dbService.deleteTables(classes);
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoEntityException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -1,6 +1,7 @@
 package dao;
 
 import annotations.Coloumn;
+import exceptions.NoEntityException;
 import model.DataSet;
 
 import java.lang.reflect.Field;
@@ -18,6 +19,7 @@ public interface DataSetDao {
                 declaredField.set(instance,resultSet.getObject(declaredField.getAnnotation(Coloumn.class).colName()));
             }
         }
+        instance.setId(resultSet.getLong("id"));
         return instance;
     }
 
@@ -27,22 +29,14 @@ public interface DataSetDao {
         }
         return create(resultSet,clazz);
     }
-//
-//    static List<User> extractList(ResultSet resultSet) throws SQLException {
-//        final List<User> result = new ArrayList<>();
-//        while (resultSet.next()) {
-//            result.add(create(resultSet));
-//        }
-//        return result;
-//    }
 
-    <T extends DataSet> void save(T user) throws SQLException, IllegalAccessException;
+    <T extends DataSet> void save(T user) throws SQLException, IllegalAccessException, NoEntityException;
 
-    <T extends DataSet> T load(long id, Class<T> clazz) throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
+    <T extends DataSet> T load(long id, Class<T> clazz) throws SQLException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, NoEntityException;
 
-    List<DataSet> getAll() throws SQLException;
+    <T extends DataSet> void update(T user) throws SQLException, IllegalAccessException, NoEntityException;
 
-    <T extends DataSet> void update(T user) throws SQLException, IllegalAccessException;
+    <T extends DataSet> void update(long id,T user) throws SQLException, IllegalAccessException, NoEntityException;
 
-    <T extends DataSet> void delete(int id, Class<T> clazz) throws SQLException;
+    <T extends DataSet> void delete(int id, Class<T> clazz) throws SQLException, NoEntityException;
 }
