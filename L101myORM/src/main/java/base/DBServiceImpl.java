@@ -56,7 +56,7 @@ public class DBServiceImpl implements DBService {
         }
         stringBuilder.setCharAt(stringBuilder.length()-1,')');
         stringBuilder.append(";");
-        System.out.println(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 

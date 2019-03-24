@@ -11,7 +11,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class DataSetExecutorDao implements DataSetDao {
 
@@ -53,7 +52,7 @@ public class DataSetExecutorDao implements DataSetDao {
         }
         stringBuilder.setCharAt(stringBuilder.length()-1,')');
         stringBuilder.append(";");
-        System.out.println(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -117,7 +116,7 @@ public class DataSetExecutorDao implements DataSetDao {
         stringBuilder.setCharAt(stringBuilder.length()-1,' ');
         stringBuilder.append("WHERE id = ?");
         stringBuilder.append(";");
-        System.out.println(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 

@@ -44,7 +44,7 @@ public class Main {
             dao.save(new UserDataSetExtended("User1","123-456",20,60.4F));
             dao.save(new UserDataSetExtended("User2","987-654",30,80.6F));
             UserDataSetExtended userExt = dao.load(1,UserDataSetExtended.class);
-            System.out.println("User id: " + userExt.getId() + " name: " + userExt.getName()
+            System.out.println("UserExtended id: " + userExt.getId() + " name: " + userExt.getName()
                     + " phone: " + userExt.getPhoneNumber() + " age: "
                     + userExt.getAge() + " weight " + userExt.getWeight());
 
