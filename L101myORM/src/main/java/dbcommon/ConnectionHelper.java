@@ -10,10 +10,8 @@ public class ConnectionHelper {
         final String connString = "jdbc:postgresql://" +    // db type
                 "localhost:" +                              // host name
                 "5432/" +                                   // port
-                "dataSetBase" +                                   // db name
-                "user=postgres&" +                         // login
-                "password=15041";                   // password
+                "dataSetBase";
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/dataSetBase","postgres", "15041");
+        return DriverManager.getConnection(connString,"postgres","15041");
     }
 }
