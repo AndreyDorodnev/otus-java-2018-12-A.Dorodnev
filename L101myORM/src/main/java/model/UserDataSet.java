@@ -6,10 +6,10 @@ import annotations.NotNullField;
 
 @Entity
 public class UserDataSet extends DataSet {
-    @Coloumn(colName = "name",colType = "VARCHAR(255)")
+    @Coloumn(colType = "VARCHAR(255)")
     @NotNullField
     String name;
-    @Coloumn(colName = "age",colType = "SMALLINT")
+    @Coloumn(colType = "SMALLINT")
     @NotNullField
     int age;
 

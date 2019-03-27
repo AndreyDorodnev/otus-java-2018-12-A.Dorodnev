@@ -7,19 +7,19 @@ import annotations.NotNullField;
 @Entity
 public class UserDataSetExtended extends DataSet {
 
-    @Coloumn(colName = "name",colType = "VARCHAR(255)")
+    @Coloumn(colType = "VARCHAR(255)")
     @NotNullField
     private String name;
 
-    @Coloumn(colName = "phone",colType = "VARCHAR(255)")
+    @Coloumn(colType = "VARCHAR(255)")
     @NotNullField
     private String phoneNumber;
 
-    @Coloumn(colName = "age",colType = "INTEGER")
+    @Coloumn(colType = "INTEGER")
     @NotNullField
     private int age;
 
-    @Coloumn(colName = "weight",colType = "FLOAT")
+    @Coloumn(colType = "FLOAT")
     @NotNullField
     private double weight;
 
