@@ -66,7 +66,6 @@ public class UserDataSetDao implements DataSetDao {
         ReflectionHelper.checkClass(clazz);
         try {
             final PreparedStatement statement = connection.prepareStatement(TableInfo.getQuery(clazz,QueryCommand.LOAD_ALL));
-//            statement.setLong(1, id);
             return (List<T>) Executor.queryPrepared(statement,UserDataSetDao::extractList,clazz);
         }
         catch (Exception ex){
@@ -87,11 +86,6 @@ public class UserDataSetDao implements DataSetDao {
             throw new DaoOperationException(ex.getMessage());
         }
     }
-
-//    @Override
-//    public <T extends DataSet> void update(T user) {
-//
-//    }
 
     @Override
     public <T extends DataSet> void deleteById(long id, Class<T> clazz) {
