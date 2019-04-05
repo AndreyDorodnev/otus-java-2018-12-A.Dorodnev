@@ -28,22 +28,18 @@ public class UserDataSetDaoHibernate implements DataSetDao{
 
     @Override
     public <T extends DataSet> void delete(T user) {
-        Transaction tr = session.beginTransaction();
         Object instance = session.load(user.getClass(),user.getId());
         if(instance!=null){
             session.delete(instance);
         }
-        tr.commit();
     }
 
     @Override
     public <T extends DataSet> void deleteById(long id, Class<T> clazz) {
-        Transaction tr = session.beginTransaction();
         Object instance = session.load(clazz,id);
         if(instance!=null){
             session.delete(instance);
         }
-        tr.commit();
     }
 
     @Override
@@ -56,3 +52,4 @@ public class UserDataSetDaoHibernate implements DataSetDao{
 
 
 }
+
