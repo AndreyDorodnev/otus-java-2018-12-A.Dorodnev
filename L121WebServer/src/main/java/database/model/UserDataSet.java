@@ -12,25 +12,35 @@ public class UserDataSet extends DataSet {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "age")
     private int age;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AddressDataSet address;
+
+    @Column(name = "role")
+    private Roles role;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",nullable = false)
     private List<PhoneDataSet> phones = new ArrayList<PhoneDataSet>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private AddressDataSet address;
+
 
 
     public UserDataSet() {
     }
 
-    public UserDataSet(String name,int age,AddressDataSet address,List<PhoneDataSet> phones){
+    public UserDataSet(String name,String password,int age,AddressDataSet address,Roles role,List<PhoneDataSet> phones){
        this.setId(-1);
        this.name = name;
+       this.password = password;
        this.age = age;
        this.address = address;
+       this.role = role;
        this.phones.addAll(phones);
     }
 
@@ -40,6 +50,22 @@ public class UserDataSet extends DataSet {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
     public int getAge() {
@@ -68,11 +94,13 @@ public class UserDataSet extends DataSet {
 
     @Override
     public String toString() {
-        return "UserDataSet{" +
+        return "{" +
                 "name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", age=" + age +
-                ", phones=" + phones +
                 ", address=" + address +
+                ", role=" + role +
+                ", phones=" + phones +
                 '}';
     }
 }

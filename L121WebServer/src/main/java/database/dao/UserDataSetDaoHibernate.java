@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class UserDataSetDaoHibernate implements DataSetDao{
@@ -48,6 +49,15 @@ public class UserDataSetDaoHibernate implements DataSetDao{
         CriteriaQuery<T> criteria = builder.createQuery(clazz);
         criteria.from(clazz);
         return session.createQuery(criteria).list();
+    }
+
+        public <T extends DataSet> T readByName(String name, Class<T> clazz) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = builder.createQuery(clazz);
+        Root<T> from = criteria.from(clazz);
+        criteria.where(builder.equal(from.get("name"),name));
+        org.hibernate.query.Query<T> query = session.createQuery(criteria);
+        return query.uniqueResult();
     }
 
 

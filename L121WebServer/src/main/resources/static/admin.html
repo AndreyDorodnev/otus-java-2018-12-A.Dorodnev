@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Admin page</h1><br>
+<form class="read-user-form" action="admin-user" method="get">
+    <h2>Read user</h2>
+    <input type="text" name="id" placeholder="user id">
+    <button type="submit">Read</button>
+</form>
+<form class="delete-user-form" action="admin-delete" method="get">
+    <h2>Delete user</h2>
+    <input type="text" name="id" placeholder="user id">
+    <button type="submit">Delete</button>
+</form>
+<form class="read-users-form" action="admin-all" method="get">
+    <h2>Read all users</h2>
+    <button>Read all</button>
+</form>
+<form class="add-user-form" action="admin-add" method="put">
+    <h2>Add user</h2>
+    <input type="text" name="name" placeholder="user name"><br>
+    <input type="text" name="password" placeholder="user password"><br>
+    <input type="text" name="age" placeholder="user age"><br>
+    <input type="text" name="address" placeholder="address"><br>
+    <select name="role">
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+    </select><br>
+    <textarea name="phones" rows="10" cols="16" placeholder="phones"></textarea><br>
+    <button type="submit">Add</button>
+</form>
+
+
+
+</body>
+</html>

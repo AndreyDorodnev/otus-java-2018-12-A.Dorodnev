@@ -2,6 +2,8 @@ package database.service;
 
 import database.dao.UserDataSetDaoHibernate;
 import database.model.DataSet;
+import database.model.Roles;
+import database.model.UserDataSet;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +40,15 @@ public class DBServiceHibernate implements DBService {
         return runInSession(session -> {
             UserDataSetDaoHibernate dao = new UserDataSetDaoHibernate(session);
             T object = dao.read(id,clazz);
+            Hibernate.initialize(object);
+            return object;
+        });
+    }
+
+    public <T extends DataSet> T readByName(String name,Class<T> clazz){
+        return runInSession(session -> {
+            UserDataSetDaoHibernate dao = new UserDataSetDaoHibernate(session);
+            T object = dao.readByName(name,clazz);
             Hibernate.initialize(object);
             return object;
         });
@@ -104,6 +115,27 @@ public class DBServiceHibernate implements DBService {
     }
 
     public boolean authenticate(String name,String password){
-        return true;
+        try{
+            UserDataSet user = readByName(name,UserDataSet.class);
+            if(user.getPassword().equals(password))
+                return true;
+            return false;
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
     }
+
+    public Roles getRoleByName(String name){
+        try{
+            UserDataSet user = readByName(name,UserDataSet.class);
+            return user.getRole();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

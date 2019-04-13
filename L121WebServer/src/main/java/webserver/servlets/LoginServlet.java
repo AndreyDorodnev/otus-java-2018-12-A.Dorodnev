@@ -1,34 +1,42 @@
 package webserver.servlets;
 
+import database.model.Roles;
 import database.service.DBServiceHibernate;
+import database.service.UserDbService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class LoginServlet extends HttpServlet{
 
     private static final int EXPIRE_INTERVAL = 20; // seconds
-    private final DBServiceHibernate dbService;
-
-    public LoginServlet(DBServiceHibernate dbService) {
-        this.dbService = dbService;
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String password = req.getParameter("password");
 
-
-        if (dbService.authenticate(name, password)) {
-            HttpSession session = req.getSession();
-            session.setMaxInactiveInterval(30);
-        } else {
-            resp.setStatus(403);
+        Cookie[] cookies = req.getCookies();
+        resp.setContentType("text/html");
+        if(cookies!=null){
+            Roles role  = getRole(cookies);
+            if(role.equals(Roles.ADMIN))
+                resp.sendRedirect("admin.html");
+            else
+                resp.sendRedirect("/user");
+        }
+        else {
+            resp.sendRedirect("index.html");
         }
     }
+
+    private Roles getRole(Cookie[] cookies){
+        Cookie cookie = Arrays.stream(cookies).filter(x->x.getName().equals("role")).findFirst().get();
+        if(cookie!=null){
+            return Roles.valueOf(cookie.getValue());
+        }
+        return null;
+    }
+
 }

@@ -27,7 +27,7 @@ public class AddressDataSet extends DataSet {
 
     @Override
     public String toString() {
-        return "AddressDataSet{" +
+        return "{" +
                 "address='" + address + '\'' +
                 '}';
     }
