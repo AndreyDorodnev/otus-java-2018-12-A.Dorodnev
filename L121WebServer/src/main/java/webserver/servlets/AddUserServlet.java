@@ -5,7 +5,7 @@ import database.model.PhoneDataSet;
 import database.model.Roles;
 import database.model.UserDataSet;
 import database.service.UserDbService;
-import webserver.adminpage.TemplateProcessor;
+import webserver.template.TemplateProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class AddUserServlet extends HttpServlet {
 
@@ -42,6 +39,7 @@ public class AddUserServlet extends HttpServlet {
             UserDataSet user = new UserDataSet(name,password,Integer.valueOf(age),new AddressDataSet(address), Roles.valueOf(Roles.class,role),getPhonesList(phones));
             if(!dbService.addUser(user))
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.sendRedirect("admin.html");
         }
     }
 

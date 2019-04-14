@@ -1,42 +1,35 @@
 package webserver.servlets;
 
 import database.model.PhoneDataSet;
+import database.model.Roles;
 import database.model.UserDataSet;
 import database.service.UserDbService;
+import webserver.helpers.CookiesHelper;
 import webserver.template.TemplateProcessor;
 
-import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ReadUserServlet extends HttpServlet {
-
+public class UserServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private final UserDbService dbService;
 
-    public ReadUserServlet(UserDbService dbService) throws IOException {
+    public UserServlet(UserDbService dbService) throws IOException {
         this.dbService = dbService;
         this.templateProcessor = new TemplateProcessor();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        UserDataSet user = dbService.readUserById(Long.valueOf(id));
-
-        Map<String, Object> pageVariables = new HashMap<>();
-        if(user==null){
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND,"User not found");
-        }
-        else {
-            pageVariables.put("id",user.getId());
+        Cookie[] cookies = request.getCookies();
+        if(cookies!=null){
+            String name = CookiesHelper.getName(cookies);
+            UserDataSet user = dbService.readByName(name);
+            Map<String, Object> pageVariables = new HashMap<>();
             pageVariables.put("name",user.getName());
             pageVariables.put("age",user.getAge());
             pageVariables.put("address",user.getAddress().getAddress());
@@ -46,10 +39,15 @@ public class ReadUserServlet extends HttpServlet {
             }
             pageVariables.put("phone",phones);
             pageVariables.put("password",user.getPassword());
-            resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println(templateProcessor.getPage("userinfo.html", pageVariables));
-            resp.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println(templateProcessor.getPage("useredit.html", pageVariables));
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+        else {
+            response.sendRedirect("index.html");
         }
 
     }
+
+
 }

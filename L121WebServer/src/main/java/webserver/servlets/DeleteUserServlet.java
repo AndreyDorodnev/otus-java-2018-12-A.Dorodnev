@@ -1,20 +1,16 @@
 package webserver.servlets;
 
-import database.model.PhoneDataSet;
 import database.model.Roles;
 import database.model.UserDataSet;
-import database.service.DBServiceHibernate;
 import database.service.UserDbService;
-import webserver.adminpage.TemplateProcessor;
+import webserver.template.TemplateProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DeleteUserServlet extends HttpServlet {

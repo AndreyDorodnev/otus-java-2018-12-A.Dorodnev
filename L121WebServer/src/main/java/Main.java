@@ -13,7 +13,7 @@ import webserver.auth.AuthentificationAdminFilter;
 import webserver.auth.AuthentificationUserFilter;
 import webserver.auth.AuthorizationFilter;
 import webserver.servlets.*;
-import webserver.userpage.UserServlet;
+import webserver.servlets.UserServlet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ public class Main {
         resourceHandler.setBaseResource(resource);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new LoginServlet()), "/login");
+        context.addServlet(new ServletHolder(new LoginServlet(new UserDbService(hibernateService.getSessionFactory()))), "/login");
         context.addFilter(new FilterHolder(new AuthorizationFilter(new UserDbService(hibernateService.getSessionFactory()))), "/login", null);
 
         context.addServlet(new ServletHolder(new UserServlet(new UserDbService(hibernateService.getSessionFactory()))),"/user");
@@ -84,11 +84,6 @@ public class Main {
         context.addServlet(new ServletHolder(new ReadAllUserServlet
                 (new UserDbService(hibernateService.getSessionFactory()))),"/admin-all");
         context.addFilter(new FilterHolder(new AuthentificationAdminFilter()),"/admin-all",null);
-
-
-//        ErrorPageErrorHandler error = new ErrorPageErrorHandler();
-//        context.setErrorHandler(error);
-//        error.addErrorPage(403, "/error/notfound");
 
         Server server = new Server(PORT);
         server.setHandler(new HandlerList(resourceHandler,context));

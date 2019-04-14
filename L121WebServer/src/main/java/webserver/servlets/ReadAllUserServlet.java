@@ -1,9 +1,8 @@
 package webserver.servlets;
 
 import database.model.UserDataSet;
-import database.service.DBServiceHibernate;
 import database.service.UserDbService;
-import webserver.adminpage.TemplateProcessor;
+import webserver.template.TemplateProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

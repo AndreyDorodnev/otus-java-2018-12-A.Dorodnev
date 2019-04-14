@@ -36,20 +36,13 @@ public class AuthorizationFilter implements Filter {
         if (dbService.authenticate(name, password)){
             Cookie userName = new Cookie("name",name);
             Cookie userPass = new Cookie("password",password);
-            Cookie userRole = null;
-            if(dbService.getRoleByName(name).equals(Roles.ADMIN))
-                userRole = new Cookie("role",Roles.ADMIN.toString());
-            else
-                userRole = new Cookie("role",Roles.USER.toString());
+            Cookie userRole = new Cookie("role",dbService.getRoleByName(name).toString());
 
             res.addCookie(userName);
             res.addCookie(userPass);
             res.addCookie(userRole);
 
             res.setContentType("text/html");
-
-            HttpSession session = req.getSession();
-//            session.setMaxInactiveInterval(30);
             filterChain.doFilter(servletRequest,servletResponse);
         } else {
             res.sendError(HttpServletResponse.SC_NOT_FOUND,"Wrong name or password");

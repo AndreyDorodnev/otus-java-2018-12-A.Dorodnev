@@ -1,4 +1,4 @@
-package webserver.adminpage;
+package webserver.template;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

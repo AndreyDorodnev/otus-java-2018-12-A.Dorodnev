@@ -9,24 +9,23 @@ import org.hibernate.service.ServiceRegistry;
 public class HibernateService {
     private final SessionFactory sessionFactory;
 
-    public HibernateService(Class<? extends DataSet>...classes) {
-        Configuration configuration = new Configuration();
-
-        for (Class<? extends DataSet> aClass : classes) {
-            configuration.addAnnotatedClass(aClass);
-        }
-
-        configuration.setProperty("hibernate.dialect","org.hibernate.dialect.PostgreSQL95Dialect");
-        configuration.setProperty("hibernate.connection.driver_class","org.postgresql.Driver");
-        configuration.setProperty("hibernate.connection.url","jdbc:postgresql://localhost:5432/dataSetBase");
-        configuration.setProperty("hibernate.connection.username","postgres");
-        configuration.setProperty("hibernate.connection.password","15041");
-        configuration.setProperty("hibernate.show_sql","true");
-        configuration.setProperty("hibernate.hbm2ddl.auto","create");
-        configuration.setProperty("hibernate.connection.useSSL","false");
-        configuration.setProperty("hibernate.enable_lazy_load_no_trans","true");
-
+    public HibernateService(Class...classes){
+        Configuration configuration = getConfig(classes);
         sessionFactory = createSessionFactory(configuration);
+    }
+
+    public Configuration getConfig(Class[] classes){
+        return HibernateConfigHelper.builder().classes(classes)
+                .dialect("org.hibernate.dialect.PostgreSQL95Dialect")
+                .driver("org.postgresql.Driver")
+                .database("jdbc:postgresql://localhost:5432/dataSetBase")
+                .user("postgres")
+                .password("15041")
+                .showSql(true)
+                .hbm2ddl("create")
+                .useSSL(false)
+                .lazyLoad(true)
+                .build();
     }
 
     private static SessionFactory createSessionFactory(Configuration configuration){
