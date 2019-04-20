@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/userinfo-style.css">
     <title>User</title>
 </head>
 <body>
-<h2>Hello ${name}!</h2>
-<p>Age: ${age}</p>
-<p>Address: ${address}</p>
-<P>Phones</P>
-<ul>
-    <#list phone as item>
-    <li>Phone: ${item}</li>
+<h2>Hello ${user.getName()}!</h2>
+<div class="info">
+    <h3>Age</h3>
+    <p>${user.getAge()}</p>
+    <h3>Address</h3>
+    <p>${user.getAddressStr()}</p>
+    <h3>Phones</h3>
+    <ul>
+        <#list user.getPhones() as item>
+        <li>Phone: ${item}</li>
     </#list>
-</ul>
-<p>Password: ${password}</p>
+    </ul>
+    <h3>Password</h3>
+    <p>${user.getPassword()}</p>
+</div>
 </body>
 </html>

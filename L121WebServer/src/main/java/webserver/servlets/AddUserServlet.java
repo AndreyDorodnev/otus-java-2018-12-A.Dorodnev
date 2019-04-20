@@ -7,6 +7,7 @@ import database.model.UserDataSet;
 import database.service.UserDbService;
 import webserver.template.TemplateProcessor;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AddUserServlet extends HttpServlet {
 
     private final TemplateProcessor templateProcessor;
     private final UserDbService dbService;
 
-    public AddUserServlet(UserDbService dbService) throws IOException {
+    public AddUserServlet(UserDbService dbService,TemplateProcessor templateProcessor) throws IOException {
         this.dbService = dbService;
-        this.templateProcessor = new TemplateProcessor();
+        this.templateProcessor = templateProcessor;
     }
 
     @Override
@@ -39,7 +41,8 @@ public class AddUserServlet extends HttpServlet {
             UserDataSet user = new UserDataSet(name,password,Integer.valueOf(age),new AddressDataSet(address), Roles.valueOf(Roles.class,role),getPhonesList(phones));
             if(!dbService.addUser(user))
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.sendRedirect("admin.html");
+            resp.resetBuffer();
+            resp.sendRedirect("/admin.html");
         }
     }
 

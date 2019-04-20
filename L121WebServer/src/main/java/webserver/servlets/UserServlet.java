@@ -18,9 +18,9 @@ public class UserServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private final UserDbService dbService;
 
-    public UserServlet(UserDbService dbService) throws IOException {
+    public UserServlet(UserDbService dbService,TemplateProcessor templateProcessor) throws IOException {
         this.dbService = dbService;
-        this.templateProcessor = new TemplateProcessor();
+        this.templateProcessor = templateProcessor;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,15 +30,7 @@ public class UserServlet extends HttpServlet {
             String name = CookiesHelper.getName(cookies);
             UserDataSet user = dbService.readByName(name);
             Map<String, Object> pageVariables = new HashMap<>();
-            pageVariables.put("name",user.getName());
-            pageVariables.put("age",user.getAge());
-            pageVariables.put("address",user.getAddress().getAddress());
-            List<String> phones = new ArrayList<>();
-            for (PhoneDataSet phone : user.getPhones()) {
-                phones.add(phone.getNumber());
-            }
-            pageVariables.put("phone",phones);
-            pageVariables.put("password",user.getPassword());
+            pageVariables.put("user",user);
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println(templateProcessor.getPage("useredit.html", pageVariables));
             response.setStatus(HttpServletResponse.SC_OK);

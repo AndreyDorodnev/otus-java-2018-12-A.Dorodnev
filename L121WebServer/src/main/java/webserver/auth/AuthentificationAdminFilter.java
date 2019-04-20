@@ -32,7 +32,7 @@ public class AuthentificationAdminFilter implements Filter {
         Cookie[] cookies = req.getCookies();
         res.setContentType("text/html");
         if(cookies == null)
-            res.sendRedirect("index.html");
+            res.sendRedirect("/index.html");
         Roles role = CookiesHelper.getRole(cookies);
         if(role.equals(Roles.ADMIN))
             filterChain.doFilter(req,res);

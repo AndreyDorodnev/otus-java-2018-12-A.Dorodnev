@@ -17,9 +17,9 @@ public class ReadAllUserServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private final UserDbService dbService;
 
-    public ReadAllUserServlet(UserDbService dbService) throws IOException {
+    public ReadAllUserServlet(UserDbService dbService,TemplateProcessor templateProcessor) throws IOException {
         this.dbService = dbService;
-        this.templateProcessor = new TemplateProcessor();
+        this.templateProcessor = templateProcessor;
     }
 
     @Override

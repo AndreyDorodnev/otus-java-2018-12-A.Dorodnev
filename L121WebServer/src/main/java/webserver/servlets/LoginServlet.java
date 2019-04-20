@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet{
         String password = req.getParameter("password");
 
         if(dbService.getRoleByName(name).equals(Roles.ADMIN))
-            resp.sendRedirect("admin.html");
+            resp.sendRedirect("/admin.html");
         else
             resp.sendRedirect("/user");
     }

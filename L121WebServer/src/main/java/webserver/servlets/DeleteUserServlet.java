@@ -18,9 +18,9 @@ public class DeleteUserServlet extends HttpServlet {
     private final TemplateProcessor templateProcessor;
     private final UserDbService dbService;
 
-    public DeleteUserServlet(UserDbService dbService) throws IOException {
+    public DeleteUserServlet(UserDbService dbService,TemplateProcessor templateProcessor) throws IOException {
         this.dbService = dbService;
-        this.templateProcessor = new TemplateProcessor();
+        this.templateProcessor = templateProcessor;
     }
 
     @Override

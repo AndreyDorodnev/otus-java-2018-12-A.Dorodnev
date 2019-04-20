@@ -88,6 +88,8 @@ public class UserDataSet extends DataSet {
         return address;
     }
 
+    public String getAddressStr() {return address.getAddress();}
+
     public void setAddress(AddressDataSet address) {
         this.address = address;
     }
