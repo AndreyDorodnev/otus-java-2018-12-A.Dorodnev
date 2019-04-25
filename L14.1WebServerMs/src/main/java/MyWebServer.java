@@ -10,15 +10,21 @@ import java.io.IOException;
 
 public class MyWebServer {
 
-    public void Start() throws Exception {
-        MessageSystemService msService = new MessageSystemService("database");
-        DataBaseService dataBaseService = new DataBaseService(msService.getMsContext(),msService.getMsContext().getDbAddress(),
-                AddressDataSet.class, PhoneDataSet.class, UserDataSet.class);
-        dataBaseService.createUsers();
-        JettyService jettyService = new JettyService(msService.getMsContext(),new TemplateProcessor());
-        jettyService.config();
-        msService.start();
-        jettyService.start();
+    public void Start() {
+        try {
+            MessageSystemService msService = new MessageSystemService("database");
+            DataBaseService dataBaseService = new DataBaseService(msService.getMsContext(),msService.getMsContext().getDbAddress(),
+                    AddressDataSet.class, PhoneDataSet.class, UserDataSet.class);
+            dataBaseService.createUsers();
+            JettyService jettyService = new JettyService(msService.getMsContext(),new TemplateProcessor());
+            jettyService.config();
+            msService.start();
+            jettyService.start();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
 }
