@@ -14,7 +14,7 @@ public class Main {
 
         try{
             QuickSort quickSort = new QuickSort();
-            quickSort.quickThreadSort(buff,0,buff.length-1);
+            quickSort.quickThreadSort(buff);
             System.out.println("result:");
             quickSort.showBuff(buff);
         }

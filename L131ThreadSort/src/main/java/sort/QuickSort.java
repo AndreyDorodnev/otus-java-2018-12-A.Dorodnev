@@ -2,7 +2,9 @@ package sort;
 
 public class QuickSort {
 
-    public void quickThreadSort(int[] buff,int start,int end) throws InterruptedException {
+    public void quickThreadSort(int[] buff) throws InterruptedException {
+        int start = 0;
+        int end = buff.length - 1;
         int middle2 = partition(buff, start, end);
         int middle1 = partition(buff,start,middle2);
         int middle3 = partition(buff,middle2,end);
