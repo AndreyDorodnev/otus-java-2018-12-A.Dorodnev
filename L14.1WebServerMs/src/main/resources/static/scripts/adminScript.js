@@ -51,27 +51,33 @@ function checkCommand(message){
     if(commandType=="answer"){
         switch(command){
             case "readUser":
-                document.getElementById("readId").value = "";
+                clearElement("readId");
                 readUserResult(result,data);
             break;
             case "deleteUser":
-                document.getElementById("deleteId").value = "";
+                clearElement("deleteId");
                 commandResult(data);
             break;
             case "readAll":
                 readAllResult(result,data);
             break;
             case "addUser":
-                document.getElementById("userName").value = "";
-                document.getElementById("userAge").value = "";
-                document.getElementById("userPassword").value = "";
-                document.getElementById("userRole").value = "";
-                document.getElementById("userAddress").value = "";
-                document.getElementById("userPhones").value = "";
+                clearElement("userName","userAge","userPassword","userAddress","userPhones");
                 commandResult(data);
             break;
         }
     }
+}
+function clearElement(...idArray) {
+    idArray.forEach(function(id){
+        document.getElementById(id).value = "";
+    });
+}
+function addLogLine(text){
+    document.getElementById("log").textContent += text + "\n";
+}
+function addLogText(text){
+    document.getElementById("log").textContent += text; 
 }
 function readUserResult(result,data){
     if(result=="true"){
@@ -88,27 +94,27 @@ function commandResult(data){
 }
 function showLogUser(msg){
     var user = JSON.parse(msg);
-    document.getElementById("log").textContent += user.name + "\n";
-    document.getElementById("log").textContent += user.age + "\n"; 
-    document.getElementById("log").textContent += "address: "; 
-    document.getElementById("log").textContent += user.address.address + "\n"; 
+    addLogLine(user.name);
+    addLogLine(user.age);
+    addLogText("address: ");
+    addLogLine(user.address.address);
     user.phones.forEach(function(phone){
-        document.getElementById("log").textContent += "phone: "; 
-        document.getElementById("log").textContent += phone.number + "\n"; 
+        addLogText("phone: "); 
+        addLogLine(phone.number);
     });
 }
 function showLogUsers(data){
     var users = JSON.parse(data);
     users.forEach(function(item){
-    document.getElementById("log").textContent += "\n"; 
-    document.getElementById("log").textContent += item.name + "\n";  
-    document.getElementById("log").textContent += item.age + "\n"; 
-    document.getElementById("log").textContent += "address: "; 
-    document.getElementById("log").textContent += item.address.address + "\n"; 
-    item.phones.forEach(function(phone){
-            document.getElementById("log").textContent += "phone: "; 
-            document.getElementById("log").textContent += phone.number + "\n"; 
-       });
+        addLogLine("");
+        addLogLine(item.name);
+        addLogLine(item.age);
+        addLogText("address: ");
+        addLogLine(item.address.address);
+        item.phones.forEach(function(phone){
+                addLogText("phone: ");
+                addLogLine(phone.number);
+           });
     });
 }
 function readAllResult(result,data){
