@@ -1,4 +1,4 @@
-package ms.messageSystem;
+package messageSystem.msBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;

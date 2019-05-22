@@ -1,26 +1,20 @@
-package ms;
+package messageSystem;
 
-import ms.messageSystem.MessageSystem;
-import ms.messageSystem.MessageSystemContext;
-import ms.messageSystem.Address;
+import messageSystem.msBase.*;
 
 public class MessageSystemService {
-
     private  final MessageSystem messageSystem;
     private final MessageSystemContext context;
     private Address dbAddress;
 
-    public MessageSystemService(String databaseId) {
+    public MessageSystemService(String databaseId, String frontendId) {
         messageSystem = new MessageSystem();
         context = new MessageSystemContext(messageSystem);
         dbAddress = new Address(databaseId);
         context.setDbAddress(dbAddress);
+        Address frontAddress = new Address(frontendId);
+        context.setFrontAddress(frontAddress);
     }
-
-//    public void config(){
-//        dbAddress = new Address(databaseId);
-//        context.setDbAddress(dbAddress);
-//    }
 
     public void start(){
         messageSystem.start();
@@ -29,5 +23,4 @@ public class MessageSystemService {
     public MessageSystemContext getMsContext(){
         return context;
     }
-
 }

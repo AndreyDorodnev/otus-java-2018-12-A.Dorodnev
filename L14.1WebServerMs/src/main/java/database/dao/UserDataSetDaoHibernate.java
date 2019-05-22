@@ -24,7 +24,8 @@ public class UserDataSetDaoHibernate implements DataSetDao{
 
     @Override
     public <T extends DataSet> T read(long id, Class<T> clazz) {
-        return session.load(clazz,id);
+//        return session.load(clazz,id);
+        return session.get(clazz,id);
     }
 
     @Override

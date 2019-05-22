@@ -1,10 +1,9 @@
-package ms.messagesBase;
+package messageSystem.messageBase;
 
-import database.service.DBServiceHibernate;
+
 import database.service.UserDbService;
-import ms.messageSystem.Address;
-import ms.messageSystem.Addressee;
-import ms.messageSystem.Message;
+import messageSystem.msBase.*;
+
 
 /**
  * Created by tully.

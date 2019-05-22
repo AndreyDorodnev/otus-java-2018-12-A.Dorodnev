@@ -83,18 +83,20 @@ public class DBServiceHibernate implements DBService {
     }
 
     @Override
-    public <T extends DataSet> void deleteById(long id, Class<T> clazz) {
+    public <T extends DataSet> boolean deleteById(long id, Class<T> clazz) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()){
             transaction = session.beginTransaction();
             UserDataSetDaoHibernate dao = new UserDataSetDaoHibernate(session);
             dao.deleteById(id,clazz);
             transaction.commit();
+            return true;
         }
         catch (Exception ex){
             if(transaction!=null)
                 transaction.rollback();
             ex.printStackTrace();
+            return false;
         }
     }
 

@@ -28,9 +28,6 @@ public class UserDataSet extends DataSet {
     @JoinColumn(name = "user_id",nullable = false)
     private List<PhoneDataSet> phones = new ArrayList<PhoneDataSet>();
 
-
-
-
     public UserDataSet() {
     }
 

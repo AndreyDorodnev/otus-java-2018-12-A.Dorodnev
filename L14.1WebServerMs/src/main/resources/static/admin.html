@@ -4,38 +4,40 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles/admin-style.css">
     <title>Title</title>
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/adminScript.js"></script>
 </head>
 <body>
 <h1>Admin page</h1><br>
-<form class="read-user-form" action="admin/user" method="get">
+<div class="read-user-form">
     <h2>Read user</h2>
-    <input type="text" name="id" placeholder="user id">
-    <button type="submit">Read</button>
-</form>
-<form class="delete-user-form" action="admin/delete" method="get">
+    <input id="readId" type="text" name="id" placeholder="user id">
+    <button onclick="readUserById()">Read</button>
+</div>
+<div class="delete-user-form">
     <h2>Delete user</h2>
-    <input type="text" name="id" placeholder="user id">
-    <button type="submit">Delete</button>
-</form>
-<form class="read-users-form" action="admin/all" method="get">
+    <input id="deleteId" type="text" name="id" placeholder="user id">
+    <button onclick="deleteUserById()">Delete</button>
+</div>
+<div class="read-users-form">
     <h2>Read all users</h2>
-    <button>Read all</button>
-</form>
-<form class="add-user-form" action="admin/add" method="get">
+    <button onclick="readUsers()">Read all</button>
+</div>
+<div class="add-user-form">
     <h2>Add user</h2>
-    <input type="text" name="name" placeholder="user name"><br>
-    <input type="text" name="password" placeholder="user password"><br>
-    <input type="text" name="age" placeholder="user age"><br>
-    <input type="text" name="address" placeholder="address"><br>
-    <select class="custom-select" name="role">
+    <input id="userName" type="text" name="name" placeholder="user name"><br>
+    <input id="userPassword" type="text" name="password" placeholder="user password"><br>
+    <input id="userAge" type="text" name="age" placeholder="user age"><br>
+    <input id="userAddress" type="text" name="address" placeholder="address"><br>
+    <select id="userRole" class="custom-select" name="role">
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
     </select><br>
-    <textarea name="phones" rows="10" cols="16" placeholder="phones"></textarea><br>
-    <button type="submit">Add</button>
-</form>
-
-
-
+    <textarea id="userPhones" name="phones" rows="10" cols="16" placeholder="phones"></textarea><br>
+    <button onclick="addUser()">Add</button>
+</div>
+<div class="log-form">
+    <textarea id="log" readonly></textarea><br/>
+</div>
 </body>
 </html>

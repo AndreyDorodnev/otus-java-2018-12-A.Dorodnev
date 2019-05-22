@@ -1,4 +1,4 @@
-package ms.messageSystem;
+package messageSystem.msBase;
 
 /**
  * @author tully

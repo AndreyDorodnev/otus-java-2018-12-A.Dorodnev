@@ -1,29 +1,28 @@
-package ms.messageSystem;
+package messageSystem.msBase;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Created by tully.
+ */
 public class MessageSystemContext {
     private final MessageSystem messageSystem;
 
-    private Map<String,Address> frontAddresses;
+    private Address frontAddress;
     private Address dbAddress;
 
     public MessageSystemContext(MessageSystem messageSystem) {
         this.messageSystem = messageSystem;
-        frontAddresses = new HashMap<>();
     }
 
     public MessageSystem getMessageSystem() {
         return messageSystem;
     }
 
-    public Address getFrontAddress(String id) {
-        return frontAddresses.get(id);
+    public Address getFrontAddress() {
+        return frontAddress;
     }
 
-    public void setFrontAddress(String id,Address frontAddress) {
-        frontAddresses.put(id,frontAddress);
+    public void setFrontAddress(Address frontAddress) {
+        this.frontAddress = frontAddress;
     }
 
     public Address getDbAddress() {
@@ -33,6 +32,4 @@ public class MessageSystemContext {
     public void setDbAddress(Address dbAddress) {
         this.dbAddress = dbAddress;
     }
-
-
 }

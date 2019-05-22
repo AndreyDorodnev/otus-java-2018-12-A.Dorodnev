@@ -2,10 +2,10 @@ package database.service;
 
 import database.model.Roles;
 import database.model.UserDataSet;
-import ms.messageSystem.Address;
-import ms.messageSystem.Addressee;
-import ms.messageSystem.MessageSystem;
-import ms.messageSystem.MessageSystemContext;
+import messageSystem.msBase.Address;
+import messageSystem.msBase.Addressee;
+import messageSystem.msBase.MessageSystem;
+import messageSystem.msBase.MessageSystemContext;
 import org.eclipse.jetty.server.Authentication;
 import org.hibernate.SessionFactory;
 
@@ -18,10 +18,9 @@ public class UserDbService implements Addressee {
     private final Address address;
 
 //    public UserDbService(SessionFactory sessionFactory) {
-//        this.dbService = new DBServiceHibernate(sessionFactory);
-//    }
-
-    public UserDbService(MessageSystemContext msContext,Address address,SessionFactory sessionFactory) {
+////        this.dbService = new DBServiceHibernate(sessionFactory);
+////    }
+    public UserDbService(MessageSystemContext msContext, Address address, SessionFactory sessionFactory) {
         this.dbService = new DBServiceHibernate(sessionFactory);
         this.msContext = msContext;
         this.address = address;
@@ -50,14 +49,9 @@ public class UserDbService implements Addressee {
     }
 
     public boolean deleteUserById(long id){
-        try {
-            dbService.deleteById(Long.valueOf(id),UserDataSet.class);
+        if(dbService.deleteById(Long.valueOf(id),UserDataSet.class))
             return true;
-        }
-        catch (Exception ex){
-            return false;
-        }
-
+        return false;
     }
 
     public List<UserDataSet> readAll(){
@@ -104,4 +98,5 @@ public class UserDbService implements Addressee {
     public MessageSystem getMS() {
         return msContext.getMessageSystem();
     }
+
 }

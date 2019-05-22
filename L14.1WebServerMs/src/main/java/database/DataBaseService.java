@@ -7,20 +7,18 @@ import database.model.UserDataSet;
 import database.service.DBServiceHibernate;
 import database.service.HibernateService;
 import database.service.UserDbService;
-import ms.messageSystem.Address;
-import ms.messageSystem.Addressee;
-import ms.messageSystem.MessageSystem;
-import ms.messageSystem.MessageSystemContext;
+import messageSystem.msBase.Address;
+import messageSystem.msBase.MessageSystemContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseService {
 
-    private final HibernateService hibernateService;
+    HibernateService hibernateService;
     private final UserDbService userDbService;
 
-    public DataBaseService(MessageSystemContext msContext,Address address,Class...classes){
+    public DataBaseService(MessageSystemContext msContext, Address address, Class...classes){
         hibernateService = new HibernateService(classes);
         userDbService = new UserDbService(msContext,address,hibernateService.getSessionFactory());
     }
@@ -52,4 +50,5 @@ public class DataBaseService {
             ex.printStackTrace();
         }
     }
+
 }
