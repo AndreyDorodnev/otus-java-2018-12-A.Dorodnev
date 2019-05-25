@@ -5,17 +5,16 @@ import database.model.UserDataSet;
 import database.service.UserDbService;
 import messageSystem.messageBase.MsgToDB;
 import messageSystem.msBase.Address;
-import webserver.sockets.MessageSocket;
 
 import java.util.List;
 
 public class MsgReadAllUsers extends MsgToDB {
 
-    private  final MessageSocket socket;
+    private  final Integer socketId;
 
-    public MsgReadAllUsers(Address from, Address to, MessageSocket socket) {
+    public MsgReadAllUsers(Address from, Address to, Integer socketId) {
         super(from, to);
-        this.socket = socket;
+        this.socketId = socketId;
     }
 
     @Override
@@ -29,6 +28,6 @@ public class MsgReadAllUsers extends MsgToDB {
         else {
             msg = "answer/readAll/false/no users found";
         }
-        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg));
+        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg,socketId));
     }
 }

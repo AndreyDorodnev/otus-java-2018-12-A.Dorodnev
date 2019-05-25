@@ -11,10 +11,13 @@ var result = lines[2];
 var data = lines[3];
 if(commandType=="answer"){
     if(result=="true"){
-        document.cookie = "user=" + document.getElementById("name").value;
+        document.cookie = "name=" + document.getElementById("name").value;
         document.cookie = "password=" + document.getElementById("pass").value;
         document.cookie = "role=" + data;
-        document.location.href = "//localhost:8080/login"; 
+        if(data=="ADMIN")
+            document.location.href = "//localhost:8080/admin";
+        else
+            document.location.href = "//localhost:8080/user";
         }
         else {
            document.getElementById("warningMsg").innerHTML  = "Wrong name or password"; 

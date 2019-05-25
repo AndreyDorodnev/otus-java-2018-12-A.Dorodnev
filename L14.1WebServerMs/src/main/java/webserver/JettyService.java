@@ -6,14 +6,17 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import webserver.filters.AuthFilter;
 import webserver.handlers.SocketHandler;
 import webserver.servlets.*;
 import webserver.template.TemplateProcessor;
 
 import java.io.IOException;
+
 
 public class JettyService {
 
@@ -36,8 +39,11 @@ public class JettyService {
     }
 
     public void config() throws IOException {
-        context.addServlet(new ServletHolder(new LoginServlet()), "/login");
+//        context.addServlet(new ServletHolder(new LoginServlet()), "/login");
         context.addServlet(new ServletHolder(new UserServlet(tmplProcessor)),"/user");
+        context.addServlet(new ServletHolder(new AdminServlet()),"/admin");
+        context.addFilter(new FilterHolder(new AuthFilter()),"/admin",null);
+        context.addFilter(new FilterHolder(new AuthFilter()),"/user",null);
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] {new SocketHandler(this.frontendService), getResourceHandler(),context});
         server.setHandler(handlers);

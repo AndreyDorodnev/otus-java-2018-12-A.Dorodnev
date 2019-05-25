@@ -1,22 +1,20 @@
 package messageSystem.messages;
 
 import com.google.gson.Gson;
-import database.model.AddressDataSet;
 import database.model.UserDataSet;
 import database.service.UserDbService;
 import messageSystem.messageBase.MsgToDB;
 import messageSystem.msBase.Address;
-import webserver.sockets.MessageSocket;
 
 public class MsgReadUser extends MsgToDB {
 
     private final String id;
-    private  final MessageSocket socket;
+    private  final Integer socketId;
 
-    public MsgReadUser(Address from, Address to,String id,MessageSocket socket) {
+    public MsgReadUser(Address from, Address to,String id,Integer socketId) {
         super(from, to);
         this.id = id;
-        this.socket = socket;
+        this.socketId = socketId;
     }
 
     @Override
@@ -30,6 +28,6 @@ public class MsgReadUser extends MsgToDB {
         else {
             msg = "answer/readUser/false/no user with id " + id;
         }
-        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg));
+        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg,socketId));
     }
 }

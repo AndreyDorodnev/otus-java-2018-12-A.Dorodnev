@@ -1,6 +1,7 @@
 package webserver.servlets;
 
 import database.model.UserDataSet;
+import webserver.helpers.CookiesHelper;
 import webserver.template.TemplateProcessor;
 
 import javax.servlet.http.Cookie;
@@ -19,22 +20,15 @@ public class UserServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         Cookie[] cookies = request.getCookies();
-        if(cookies!=null){
-            String name = cookies[0].getValue();
-            UserDataSet userDataSet = new UserDataSet();
-            userDataSet.setName(name);
-            Map<String, Object> pageVariables = new HashMap<>();
-            pageVariables.put("user",userDataSet);
-            response.setContentType("text/html;charset=utf-8");
-            response.getWriter().println(templateProcessor.getPage("useredit.html", pageVariables));
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-        else {
-            response.sendRedirect("index.html");
-        }
-
+        String name = CookiesHelper.getName(cookies);
+        UserDataSet userDataSet = new UserDataSet();
+        userDataSet.setName(name);
+        Map<String, Object> pageVariables = new HashMap<>();
+        pageVariables.put("user",userDataSet);
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(templateProcessor.getPage("useredit.html", pageVariables));
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
 

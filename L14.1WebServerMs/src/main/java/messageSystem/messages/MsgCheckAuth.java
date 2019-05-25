@@ -3,19 +3,17 @@ package messageSystem.messages;
 import database.service.UserDbService;
 import messageSystem.messageBase.MsgToDB;
 import messageSystem.msBase.Address;
-import webserver.sockets.MessageSocket;
-
 
 public class MsgCheckAuth extends MsgToDB {
     private final String login;
     private final String password;
-    private final MessageSocket socket;
+    private final Integer socketId;
 
-    public MsgCheckAuth(Address from, Address to, String login, String password, MessageSocket socket) {
+    public MsgCheckAuth(Address from, Address to, String login, String password, Integer socketId) {
         super(from, to);
         this.login = login;
         this.password = password;
-        this.socket = socket;
+        this.socketId = socketId;
     }
 
     @Override
@@ -23,11 +21,11 @@ public class MsgCheckAuth extends MsgToDB {
         String msg;
         if(dbService.authenticate(login,password)){
             msg = "answer/auth/true/" + dbService.getRoleByName(login);
-            dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg));
+            dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg,socketId));
         }
         else {
             msg = "answer/auth/false/";
-            dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg));
+            dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg,socketId));
         }
 
     }

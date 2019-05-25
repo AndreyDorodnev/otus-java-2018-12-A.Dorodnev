@@ -16,16 +16,17 @@ public class MessageSocket {
 
     private Session session;
     private final FrontendService frontendService;
+    private final Integer id;
 
     public MessageSocket(FrontendService frontendService) {
         this.frontendService = frontendService;
+        this.id = frontendService.addSocket(this);
     }
 
     @OnWebSocketConnect
     public void OnConnect(Session session){
         try {
             this.session = session;
-            frontendService.setSocket(this);
             session.getRemote().sendString("Connect message");
         } catch (IOException e){
             e.printStackTrace();
@@ -35,7 +36,15 @@ public class MessageSocket {
     @OnWebSocketMessage
     public void onText(String message){
         try {
-            checkCommand(message);
+            processCommand(message);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void answerCommand(String message){
+        try {
+            this.session.getRemote().sendString(message);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -43,10 +52,11 @@ public class MessageSocket {
 
     @OnWebSocketClose
     public void onClose(int statusCode,String reason){
+        frontendService.deleteSocket(id);
         System.out.println("Close!");
     }
 
-    private void checkCommand(String message) throws IOException {
+    private void processCommand(String message) throws IOException {
         String[] lines = message.split("/");
         String cmd = lines[0];
         switch (cmd){
@@ -65,34 +75,31 @@ public class MessageSocket {
             case "addUser":
                 addUser(lines[1]);
                 break;
-            case "answer":
-                this.session.getRemote().sendString(message);
-                break;
         }
     }
 
     private void authorization(String login,String password){
-        Message msg = new MsgCheckAuth(frontendService.getFrontAddress(), frontendService.getDbAddress(), login, password,this);
+        Message msg = new MsgCheckAuth(frontendService.getFrontAddress(), frontendService.getDbAddress(), login, password,id);
         frontendService.getMS().sendMessage(msg);
     }
 
-    private void readUserById(String id){
-        Message msg = new MsgReadUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),id,this);
+    private void readUserById(String userId){
+        Message msg = new MsgReadUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),userId,id);
         frontendService.getMS().sendMessage(msg);
     }
 
-    private void deleteUserById(String id){
-        Message msg = new MsgDeleteUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),id,this);
+    private void deleteUserById(String userId){
+        Message msg = new MsgDeleteUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),userId,id);
         frontendService.getMS().sendMessage(msg);
     }
 
     private void readAllUsers(){
-        Message msg = new MsgReadAllUsers(frontendService.getFrontAddress(),frontendService.getDbAddress(),this);
+        Message msg = new MsgReadAllUsers(frontendService.getFrontAddress(),frontendService.getDbAddress(),id);
         frontendService.getMS().sendMessage(msg);
     }
 
     private void addUser(String jsonStr){
-        Message msg = new MsgAddUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),jsonStr);
+        Message msg = new MsgAddUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),jsonStr,id);
         frontendService.getMS().sendMessage(msg);
     }
 

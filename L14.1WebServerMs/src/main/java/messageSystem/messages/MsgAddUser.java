@@ -5,15 +5,16 @@ import database.model.UserDataSet;
 import database.service.UserDbService;
 import messageSystem.messageBase.MsgToDB;
 import messageSystem.msBase.Address;
-import webserver.sockets.MessageSocket;
 
 public class MsgAddUser extends MsgToDB {
 
     private final String jsonStr;
+    private final Integer socketId;
 
-    public MsgAddUser(Address from, Address to, String jsonStr) {
+    public MsgAddUser(Address from, Address to, String jsonStr,Integer socketId) {
         super(from, to);
         this.jsonStr = jsonStr;
+        this.socketId = socketId;
     }
 
     @Override
@@ -29,6 +30,6 @@ public class MsgAddUser extends MsgToDB {
             e.printStackTrace();
             msg = "answer/addUser/false/add user error!";
         }
-        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg));
+        dbService.getMS().sendMessage(new MsgAnswer(getTo(), getFrom(), msg,socketId));
     }
 }
