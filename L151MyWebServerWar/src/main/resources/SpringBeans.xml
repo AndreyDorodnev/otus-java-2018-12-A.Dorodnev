@@ -1,0 +1,56 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="msService" class="messageSystem.MessageSystemService">
+        <constructor-arg>
+            <value>"database"</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>"frontend"</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="hibernateService" class="database.service.HibernateService">
+        <constructor-arg>
+            <list>
+                <value type="java.lang.Class">database.model.AddressDataSet</value>
+                <value type="java.lang.Class">database.model.PhoneDataSet</value>
+                <value type="java.lang.Class">database.model.UserDataSet</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="dbService" class="database.service.DBServiceHibernate">
+        <constructor-arg>
+            <value>#{ hibernateService.getSessionFactory()}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="userDbService" class="database.service.UserDbService">
+        <constructor-arg>
+            <value>#{ msService.getMsContext() }</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>#{ msService.dbAddress}</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>#{ dbService}</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="dataBaseService" class="database.DataBaseService" init-method="createUsers">
+        <property name="userDbService" value="#{userDbService}"/>
+    </bean>
+
+    <bean id="frontendService" class="webserver.FrontendService">
+        <constructor-arg>
+            <value>#{ msService.getMsContext() }</value>
+        </constructor-arg>
+        <constructor-arg>
+            <value>#{ msService.frontAddress}</value>
+        </constructor-arg>
+    </bean>
+
+</beans>
