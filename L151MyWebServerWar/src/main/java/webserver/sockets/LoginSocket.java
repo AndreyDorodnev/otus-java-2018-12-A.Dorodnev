@@ -2,8 +2,8 @@ package webserver.sockets;
 
 import messageSystem.messages.*;
 import messageSystem.msBase.Message;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import webserver.FrontendService;
 
 import javax.websocket.Session;
@@ -15,17 +15,20 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
 @ServerEndpoint("/")
+@Configurable(preConstruction = true)
 public class LoginSocket implements WebSocketBase {
 
+    @Autowired
+    private FrontendService frontendService;
+
     private Session session;
-    private final FrontendService frontendService;
-    private final Integer id;
+    private  Integer id;
 
     public LoginSocket() {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext(
-                        "SpringBeans.xml");
-        frontendService = context.getBean("frontendService",FrontendService.class);
+//        ApplicationContext context =
+//                new ClassPathXmlApplicationContext(
+//                        "SpringBeans.xml");
+//        frontendService = context.getBean("frontendService",FrontendService.class);
         this.id = frontendService.addSocket(this);
     }
 
@@ -67,6 +70,8 @@ public class LoginSocket implements WebSocketBase {
         String cmd = lines[0];
         if(cmd.equals("auth")){
             System.out.println("auth command start");
+            if(frontendService==null)
+                System.out.println("NULL");
             authorization(lines[1],lines[2]);
         }
     }
@@ -75,4 +80,10 @@ public class LoginSocket implements WebSocketBase {
         Message msg = new MsgCheckAuth(frontendService.getFrontAddress(), frontendService.getDbAddress(), login, password,id);
         frontendService.getMS().sendMessage(msg);
     }
+
+//    @Autowired
+//    public void setFrontendService(FrontendService frontendService) {
+//        this.frontendService = frontendService;
+//        this.id = frontendService.addSocket(this);
+//    }
 }
