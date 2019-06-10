@@ -12,19 +12,11 @@ public class CookiesHelper {
     }
 
     public static String getName(Cookie[] cookies){
-        Cookie cookie = Arrays.stream(cookies).filter(x->x.getName().equals("name")).findFirst().get();
-        if(cookie!=null){
-            return cookie.getValue();
-        }
-        return null;
+        return Arrays.stream(cookies).filter(x->x.getName().equals("role")).findFirst().map(Cookie::getValue).orElse(null);
     }
 
     public static String getRole(Cookie[] cookies){
-        Cookie cookie = Arrays.stream(cookies).filter(x->x.getName().equals("role")).findFirst().get();
-        if(cookie!=null){
-            return Roles.valueOf(cookie.getValue()).toString();
-        }
-        return null;
+        return Arrays.stream(cookies).filter(x->x.getName().equals("role")).findFirst().map(c -> Roles.valueOf(c.getValue()).toString()).orElse(null);
     }
 
 }

@@ -6,14 +6,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<context:component-scan base-package="webserver.sockets" />-->
-
-    <context:annotation-config />
-    <context:spring-configured />
-    <context:load-time-weaver />
-
-    <context:component-scan base-package="webserver.sockets" />
-
     <bean id="msService" class="messageSystem.MessageSystemService">
         <constructor-arg>
             <value>"database"</value>
@@ -64,8 +56,7 @@
         </constructor-arg>
     </bean>
 
-    <!--<bean id="loginSocket" class="webserver.sockets.LoginSocket">-->
-        <!--<property name="frontendService" value="#{frontendService}"/>-->
-    <!--</bean>-->
+    <bean id="templateProcessor" class="webserver.template.TemplateProcessor">
+    </bean>
 
 </beans>

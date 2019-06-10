@@ -5,6 +5,7 @@ import messageSystem.msBase.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import webserver.FrontendService;
 
 import javax.websocket.Session;
@@ -19,16 +20,13 @@ import java.io.IOException;
 @ServerEndpoint("/admin")
 public class AdminSocket implements WebSocketBase {
 
-//    @Autowired
+    @Autowired
     private FrontendService frontendService;
     private Session session;
     private final Integer id;
 
     public AdminSocket() {
-        ApplicationContext context =
-                new ClassPathXmlApplicationContext(
-                        "SpringBeans.xml");
-        frontendService = context.getBean("frontendService",FrontendService.class);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         this.id = frontendService.addSocket(this);
     }
 
@@ -103,10 +101,5 @@ public class AdminSocket implements WebSocketBase {
         Message msg = new MsgAddUser(frontendService.getFrontAddress(),frontendService.getDbAddress(),jsonStr,id);
         frontendService.getMS().sendMessage(msg);
     }
-
-//    @Autowired
-//    public void setFrontendService(FrontendService frontendService) {
-//        this.frontendService = frontendService;
-//    }
 
 }

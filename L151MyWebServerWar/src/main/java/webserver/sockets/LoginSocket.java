@@ -4,6 +4,7 @@ import messageSystem.messages.*;
 import messageSystem.msBase.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import webserver.FrontendService;
 
 import javax.websocket.Session;
@@ -15,7 +16,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
 @ServerEndpoint("/")
-@Configurable(preConstruction = true)
+//@Configurable(preConstruction = true)
 public class LoginSocket implements WebSocketBase {
 
     @Autowired
@@ -25,10 +26,7 @@ public class LoginSocket implements WebSocketBase {
     private  Integer id;
 
     public LoginSocket() {
-//        ApplicationContext context =
-//                new ClassPathXmlApplicationContext(
-//                        "SpringBeans.xml");
-//        frontendService = context.getBean("frontendService",FrontendService.class);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         this.id = frontendService.addSocket(this);
     }
 
@@ -81,9 +79,4 @@ public class LoginSocket implements WebSocketBase {
         frontendService.getMS().sendMessage(msg);
     }
 
-//    @Autowired
-//    public void setFrontendService(FrontendService frontendService) {
-//        this.frontendService = frontendService;
-//        this.id = frontendService.addSocket(this);
-//    }
 }
