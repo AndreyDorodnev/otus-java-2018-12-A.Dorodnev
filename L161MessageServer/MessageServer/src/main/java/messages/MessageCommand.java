@@ -5,5 +5,6 @@ public enum MessageCommand {
     READ_BY_ID,
     DELETE_BY_ID,
     READ_ALL,
-    ADD_USER
+    ADD_USER,
+    ERROR
 }

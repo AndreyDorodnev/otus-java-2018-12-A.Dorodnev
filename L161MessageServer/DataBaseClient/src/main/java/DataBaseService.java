@@ -73,49 +73,56 @@ public class DataBaseService {
             while (true){
                 Object msg = client.take();
                 System.out.println("Message received: " + msg.toString());
-                answerMessage((MessageDbFs)msg);
+                answerMessage(msg);
             }
         });
     }
 
-    private void answerMessage(MessageDbFs inputMessage){
-        MessageDbFs outputMessage = new MessageDbFs();
-        outputMessage.setRemoteAddr(inputMessage.getRemoteAddr());
-        outputMessage.setCommand(inputMessage.getCommand());
-        outputMessage.setWebSocketId(inputMessage.getWebSocketId());
-        switch (inputMessage.getCommand()){
-            case AUTH:
-                authAnswer(inputMessage,outputMessage);
-                break;
-            case READ_BY_ID:
-                readUserAnswer(inputMessage,outputMessage);
-                break;
-            case READ_ALL:
-                readAllAnswer(inputMessage,outputMessage);
-                break;
-            case DELETE_BY_ID:
-                deleteUserAnswer(inputMessage,outputMessage);
-                break;
-            case ADD_USER:
-                addUserAnswer(inputMessage,outputMessage);
-                break;
+    private void answerMessage(Object msg){
+        try {
+            MessageDbFs inputMessage = (MessageDbFs)msg;
+            MessageDbFs outputMessage = new MessageDbFs();
+            outputMessage.setRemoteAddr(inputMessage.getRemoteAddr());
+            outputMessage.setCommand(inputMessage.getCommand());
+            outputMessage.setWebSocketId(inputMessage.getWebSocketId());
+            switch (inputMessage.getCommand()){
+                case AUTH:
+                    authAnswer(inputMessage,outputMessage);
+                    break;
+                case READ_BY_ID:
+                    readUserAnswer(inputMessage,outputMessage);
+                    break;
+                case READ_ALL:
+                    readAllAnswer(inputMessage,outputMessage);
+                    break;
+                case DELETE_BY_ID:
+                    deleteUserAnswer(inputMessage,outputMessage);
+                    break;
+                case ADD_USER:
+                    addUserAnswer(inputMessage,outputMessage);
+                    break;
+            }
+            System.out.println("SEND MSG: " + outputMessage.toString() + " command: " + outputMessage.getCommand() + " data: " + outputMessage.getData());
+            client.send(outputMessage);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        System.out.println("SEND MSG: " + outputMessage.toString() + " command: " + outputMessage.getCommand() + " data: " + outputMessage.getData());
-        client.send(outputMessage);
+
     }
 
     private void authAnswer(MessageDbFs inputMessage, MessageDbFs outputMessage){
-        MsgCheckAuth msgCheckAuth = new Gson().fromJson(inputMessage.getData(),MsgCheckAuth.class);
-        if(userDbService.authenticate(msgCheckAuth.getLogin(),msgCheckAuth.getPassword())){
-            outputMessage.setData("true/" + userDbService.getRoleByName(msgCheckAuth.getLogin()).toString());
+        String login = inputMessage.getData().substring(0,inputMessage.getData().indexOf('/'));
+        String password = inputMessage.getData().substring(inputMessage.getData().indexOf('/')+1,inputMessage.getData().length());
+        if(userDbService.authenticate(login,password)){
+            outputMessage.setData("true/" + userDbService.getRoleByName(login).toString());
         }else {
             outputMessage.setData("false");
         }
     }
 
     private void readUserAnswer(MessageDbFs inputMessage, MessageDbFs outputMessage){
-        MsgReadUser msgReadUser = new Gson().fromJson(inputMessage.getData(),MsgReadUser.class);
-        UserDataSet user = userDbService.readUserById(Integer.valueOf(msgReadUser.getId()));
+        String id = inputMessage.getData();
+        UserDataSet user = userDbService.readUserById(Integer.valueOf(id));
         if(user!=null)
             outputMessage.setData("true/" + new Gson().toJson(user));
         else
@@ -131,8 +138,8 @@ public class DataBaseService {
     }
 
     private void deleteUserAnswer(MessageDbFs inputMessage, MessageDbFs outputMessage){
-        MsgDelUser msgDelUser = new Gson().fromJson(inputMessage.getData(),MsgDelUser.class);
-        if(userDbService.deleteUserById(Integer.valueOf(msgDelUser.getId())))
+        String id = inputMessage.getData();
+        if(userDbService.deleteUserById(Integer.valueOf(id)))
             outputMessage.setData("true");
         else
             outputMessage.setData("false");

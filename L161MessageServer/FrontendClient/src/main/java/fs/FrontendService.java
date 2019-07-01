@@ -20,7 +20,7 @@ public class FrontendService {
 
     private final SocketMessageWorker client;
     private final Map<Integer, WebSocketBase> socketMap = new HashMap<>();
-    private Integer socketCounter=0;
+    private int socketCounter=0;
 
     public FrontendService() throws IOException {
         client = new ClientSocketMessageWorker(HOST, PORT);

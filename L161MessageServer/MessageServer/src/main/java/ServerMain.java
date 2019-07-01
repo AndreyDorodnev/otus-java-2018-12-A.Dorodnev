@@ -1,4 +1,4 @@
-import Server.SocketMsgServer;
+import server.SocketMsgServer;
 import runner.ProcessRunnerImpl;
 
 import javax.management.MBeanServer;
@@ -23,15 +23,15 @@ public class ServerMain {
     public void Start() throws Exception {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-        startClient( executorService );
+//        startClient( executorService );
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name = new ObjectName("Server:type=Server");
+        ObjectName name = new ObjectName("server:type=server");
 
         SocketMsgServer server = new SocketMsgServer();
         mbs.registerMBean(server, name);
 
-        System.out.println("Start Server");
+        System.out.println("Start server");
         server.start();
 
         executorService.shutdown();

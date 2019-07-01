@@ -17,7 +17,7 @@ public class LoginSocket implements WebSocketBase {
     private Session session;
     @Autowired
     private FrontendService frontendService;
-    private Integer id;
+    private int id;
 
     public LoginSocket(FrontendService frontendService) {
         this.frontendService = frontendService;
@@ -86,21 +86,19 @@ public class LoginSocket implements WebSocketBase {
 
     private void authorization(String login,String password){
         System.out.println("auth command start");
-        MsgCheckAuth msg = new MsgCheckAuth(login,password);
-        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.AUTH,id,new Gson().toJson(msg));
+        String data = login + "/" + password;
+        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.AUTH,id,data);
         frontendService.sendMessage(sendMessage);
     }
 
 
     private void readUserById(String userId){
-        MsgReadUser msg = new MsgReadUser(userId);
-        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.READ_BY_ID,id,new Gson().toJson(msg));
+        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.READ_BY_ID,id,userId);
         frontendService.sendMessage(sendMessage);
     }
 
     private void deleteUserById(String userId){
-        MsgDelUser msg = new MsgDelUser(userId);
-        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.DELETE_BY_ID,id,new Gson().toJson(msg));
+        MessageDbFs sendMessage = new MessageDbFs(null, MessageCommand.DELETE_BY_ID,id,userId);
         frontendService.sendMessage(sendMessage);
     }
 
