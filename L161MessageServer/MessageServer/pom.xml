@@ -11,7 +11,7 @@
 
     <artifactId>MessageServer</artifactId>
 
-    <!--<name>M-server</name>-->
+    <!--<name>M-messageServer.server</name>-->
     <url>http://www.example.com</url>
     <dependencies>
         <dependency>

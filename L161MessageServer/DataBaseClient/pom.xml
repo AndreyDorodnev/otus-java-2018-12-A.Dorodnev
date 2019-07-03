@@ -109,7 +109,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>DbcMain</mainClass>
+                            <mainClass>database.DbcMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -132,7 +132,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>DbcMain</mainClass>
+                        <mainClass>database.DbcMain</mainClass>
                     </manifest>
                 </archive>
             </configuration>

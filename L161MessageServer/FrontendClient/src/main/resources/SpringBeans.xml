@@ -6,10 +6,10 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<bean id="frontendService" class="fs.FrontendService">-->
+    <!--<bean id="frontendService" class="front.fs.FrontendService">-->
     <!--</bean>-->
 
-    <bean id="templateProcessor" class="template.TemplateProcessor">
+    <bean id="templateProcessor" class="front.template.TemplateProcessor">
     </bean>
 
 </beans>

@@ -23,7 +23,7 @@
 
     <servlet>
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>servlets.UserServlet</servlet-class>
+        <servlet-class>front.servlets.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -33,7 +33,7 @@
 
     <servlet>
         <servlet-name>adminServlet</servlet-name>
-        <servlet-class>servlets.AdminServlet</servlet-class>
+        <servlet-class>front.servlets.AdminServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -43,7 +43,7 @@
 
     <filter>
         <filter-name>authFilter</filter-name>
-        <filter-class>filters.AuthFilter</filter-class>
+        <filter-class>front.filters.AuthFilter</filter-class>
         <init-param>
             <param-name>active</param-name>
             <param-value>true</param-value>

@@ -134,7 +134,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>FrontMain</mainClass>
+                            <mainClass>front.FrontMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -157,7 +157,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>FrontMain</mainClass>
+                            <mainClass>front.FrontMain</mainClass>
                         </manifest>
                     </archive>
 

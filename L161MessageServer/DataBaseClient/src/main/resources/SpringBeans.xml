@@ -6,29 +6,29 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="hibernateService" class="service.HibernateService">
+    <bean id="hibernateService" class="database.service.HibernateService">
         <constructor-arg>
             <list>
-                <value type="java.lang.Class">model.AddressDataSet</value>
-                <value type="java.lang.Class">model.PhoneDataSet</value>
-                <value type="java.lang.Class">model.UserDataSet</value>
+                <value type="java.lang.Class">database.model.AddressDataSet</value>
+                <value type="java.lang.Class">database.model.PhoneDataSet</value>
+                <value type="java.lang.Class">database.model.UserDataSet</value>
             </list>
         </constructor-arg>
     </bean>
 
-    <bean id="dbService" class="service.DBServiceHibernate">
+    <bean id="dbService" class="database.service.DBServiceHibernate">
         <constructor-arg>
             <value>#{ hibernateService.getSessionFactory()}</value>
         </constructor-arg>
     </bean>
 
-    <bean id="userDbService" class="service.UserDbService">
+    <bean id="userDbService" class="database.service.UserDbService">
         <constructor-arg>
             <value>#{ dbService}</value>
         </constructor-arg>
     </bean>
 
-    <bean id="dataBaseService" class="DataBaseService" >
+    <bean id="dataBaseService" class="database.DataBaseService" >
         <property name="userDbService" value="#{userDbService}"/>
     </bean>
 
