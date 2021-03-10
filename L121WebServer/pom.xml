@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <jetty.version>9.4.9.v20180320</jetty.version>
+        <jetty.version>11.0.1</jetty.version>
         <freemarker.version>2.3.28</freemarker.version>
         <rest.assured.version>2.9.0</rest.assured.version>
         <json.path.version>3.3.0</json.path.version>
